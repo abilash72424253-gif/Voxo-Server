@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express');const path = require('path');
 const cors = require('cors');
 const { AccessToken } = require('livekit-server-sdk');
 const app = express();
@@ -10,8 +10,10 @@ const VOXO_KEYS = {
   "VOXO-KEY-FREE-001": { owner: "Free User", limit: 100 }
 };
 
-app.get('/', (req, res) => {
-  res.send('VOXO SERVER RUNNING - FREE!');
+app.get('/', (req, res) => {app.get('/', (req, res) => {
+res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 });
 
 app.post('/get-token', (req, res) => {

@@ -14,7 +14,19 @@ const VOXO_KEYS = {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
+app.get('/get-token', (req, res) => {
+  const { voxoKey, room, username } = req.query;
+  if (!VOXO_KEYS[voxoKey]) {
+    return res.json({ error: "WRONG KEY!" });
+  }
+  const token = new AccessToken(
+    process.env.LIVEKIT_API_KEY,
+    process.env.LIVEKIT_API_SECRET,
+    { identity: username }
+  );
+  token.addGrant({ roomJoin: true, room: room, canPublish: true, canSubscribe: true });
+  res.json({ token: token.toJwt() });
+});
 app.post('/get-token', (req, res) => {
   const { voxoKey, room, username } = req.body;
   if (!VOXO_KEYS[voxoKey]) {

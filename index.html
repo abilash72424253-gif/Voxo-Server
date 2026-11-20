@@ -1,57 +1,149 @@
-
 <!DOCTYPE html>
-<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>VOXO</title><script src="https://cdn.jsdelivr.net/npm/livekit-client@2.15.0/dist/livekit-client.umd.min.js"></script><style>body{background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:0;margin:0}button{background:#ff2d55;color:#fff;border:0;padding:12px 20px;border-radius:20px;margin:5px;font-size:16px}input{padding:10px;border-radius:10px;border:0;width:85%;margin:5px;background:#222;color:#fff}.topbar{display:flex;justify-content:space-between;padding:10px;background:#000}.coins{color:#FFD700;font-weight:bold;cursor:pointer}.giftBtn{position:fixed;bottom:15px;right:15px;background:#ff2d55;width:60px;height:60px;border-radius:50%;font-size:28px;z-index:99}#giftPanel,#coinPanel,#boardPanel{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-radius:20px 20px 0 0;padding:15px;display:none;z-index:100;max-height:70vh;overflow:auto}.tabs{display:flex;gap:15px;overflow-x:auto;white-space:nowrap;margin-bottom:10px}.tabs span{padding:5px 10px;border-radius:15px;background:#333}.tabs span.active{background:#ff2d55}.gifts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.gift{background:#222;padding:10px;border-radius:15px;cursor:pointer;border:2px solid transparent}.gift.sel{border-color:#ff2d55;background:#3a1a25}.gift .emoji{font-size:32px}.gift .price{color:#FFD700;font-size:13px}.sendBar{display:flex;align-items:center;justify-content:space-between;margin-top:15px}.sendBar button{background:#00c853;padding:12px 30px}.coinPack{background:#222;padding:15px;border-radius:15px;margin:8px;display:flex;justify-content:space-between;align-items:center}.coinPack.hot{border-color:#FFD700;background:#3a2a00}#bigGift{position:fixed;top:0;left:0;right:0;bottom:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,0.85);z-index:200;overflow:hidden}.particle{position:absolute;font-size:32px;animation:fall 2.8s linear forwards}@keyframes giftAnim{0%{transform:scale(0) rotate(-30deg)}20%{transform:scale(1.6) rotate(15deg)}40%{transform:scale(1.2) rotate(-10deg)}60%{transform:scale(1.5) rotate(5deg)}100%{transform:scale(1.3)}}@keyframes fall{0%{top:-20px;opacity:1}100%{top:100%;opacity:0;transform:rotate(360deg)}}</style></head><body>
-<div class="topbar"><div>🎤 <b>VOXO</b></div><div><span onclick="openBoard()" style="cursor:pointer">🏆 Board</span> &nbsp; <span class="coins" onclick="openCoinShop()">🪙 <span id="myCoins">761</span> +</span> &nbsp; 🔊 <span onclick="toggleSound(event)" id="soundBtn">ON</span></div></div>
-<h1>🎤 VOXO</h1><p>Live Voice Rooms</p><input id="name" placeholder="Un peru..." value="ABILASH"><br><input id="room" placeholder="Room peru" value="Tamil Room"><br><input id="key" placeholder="VOXO Key" value="VOXO-KEY-BILGI-001"><br><button onclick="join()">Join Room</button><div id="status" style="margin-top:10px"></div><div id="users"></div>
-<button class="giftBtn" onclick="openGift()">🎁</button>
-<div id="coinPanel"><div style="display:flex;justify-content:space-between"><b>🪙 Coins Recharge</b><span onclick="closeCoinShop()" style="font-size:20px">✖</span></div><p>Balance: <b style="color:#FFD700">🪙 <span id="coinBal2">761</span></b></p><div class="coinPack" onclick="buyCoins(100,10)"><div><b>🪙 100 Coins</b></div><b style="color:#00ff88">₹10</b></div><div class="coinPack" onclick="buyCoins(550,50)"><div><b>🪙 550 Coins</b><div style="font-size:12px">+50 Bonus</div></div><b style="color:#00ff88">₹50</b></div><div class="coinPack hot" onclick="buyCoins(1200,100)"><div><b>🪙 1200 Coins 🔥 BEST</b><div style="font-size:12px;color:#FFD700">+200 Bonus</div></div><b style="color:#00ff88">₹100</b></div><div class="coinPack" onclick="buyCoins(6500,500)"><div><b>🪙 6500 Coins</b><div style="font-size:12px">+1500 Bonus</div></div><b style="color:#00ff88">₹500</b></div><div class="coinPack" onclick="buyCoins(15000,1000)"><div><b>🪙 15000 Coins 💎 VIP</b></div><b style="color:#00ff88">₹1000</b></div><div class="coinPack" onclick="buyCoins(80000,5000)"><div><b>🪙 80000 Coins 👑 KING</b></div><b style="color:#00ff88">₹5000</b></div></div>
-<div id="giftPanel"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:20px">🎁 GIFT HUB</b><span onclick="closeGift()" style="font-size:22px">✖</span></div><input id="giftSearch" placeholder="🔍 Gift thedu... Dragon, Ring..." oninput="searchGift(this.value)" style="width:92%;margin:10px 0"><div class="tabs" id="hubTabs"><span class="active" onclick="filterHub('all',this)">🔥 All</span><span onclick="filterHub('trending',this)">📈 Trending</span><span onclick="filterHub('coin',this)">🪙 Coin Gift</span><span onclick="filterHub('vip',this)">👑 VIP</span><span onclick="filterHub('love',this)">❤️ Love</span><span onclick="filterHub('luxury',this)">💎 Luxury</span></div><div style="background:#ff2d55;padding:8px;border-radius:10px;margin-bottom:10px;text-align:left">🔥 <b>TRENDING:</b> 🐉 Dragon • 💍 Ring • 🌍 World King</div><div class="gifts" id="giftList"></div><div class="sendBar"><div>Qty: <b id="qty">1</b> &nbsp; <span onclick="setQty(1)">1</span> <span onclick="setQty(9)">9</span> <span onclick="setQty(49)">49</span> <span onclick="setQty(99)">99</span> <span onclick="setQty(999)">999</span></div><button onclick="sendGift()">அனுப்பு 🚀</button></div></div>
-<div id="boardPanel"><div style="display:flex;justify-content:space-between"><b>🏆 GIFT LEADERBOARD</b><span onclick="closeBoard()" style="font-size:20px">✖</span></div><p style="font-size:12px;color:#aaa">Innaiku Yaaru King? 👑</p><div id="boardList"></div><div style="margin-top:15px;background:#222;padding:10px;border-radius:10px"><b>🎁 Un Rank:</b> <span id="myRank">Unakku innum gift illa</span><br><b>🪙 Total:</b> <span id="myTotal" style="color:#FFD700">0</span></div><button onclick="closeBoard();openGift()" style="width:90%">🎁 Gift Anuppu - King Aagu!</button></div>
-<div id="bigGift"></div>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GifHub.com - 100 Gifts</title>
+<style>
+ *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+ body{background:#02021a;color:#fff;min-height:100vh;padding:10px}
+ .phone{max-width:430px;margin:0 auto;background:linear-gradient(180deg,#1a0a3a,#0a0a2e);border-radius:28px;overflow:hidden;border:1px solid #333;box-shadow:0 0 60px rgba(255,0,85,.5);min-height:90vh}
+ .header{padding:16px 16px 4px;background:radial-gradient(circle at 50% 0%,#3a0a6e,transparent 70%)}
+ .toprow{display:flex;justify-content:space-between;align-items:center}
+ .avatar{width:44px;height:44px;border-radius:50%;border:2px solid #ffd700;background:linear-gradient(45deg,#ff0055,#ffaa00);display:flex;align-items:center;justify-content:center;font-size:22px}
+ .bal{text-align:right} .bal b{color:#ffd700;font-size:18px} .bal span{font-size:11px;color:#aaa} .bal button{background:#00aaff;color:#fff;border:0;padding:5px 12px;border-radius:12px;font-size:11px;font-weight:800;margin-left:4px;cursor:pointer}
+ .logo{text-align:center;margin:16px 0 6px}
+ .logo h1{font-size:42px;letter-spacing:1px}
+ .logo h1 span{color:#ff0055} .logo h1 b{color:#ffd700}
+ .logo p{font-size:13px;color:#00e5ff;letter-spacing:2px;margin-top:4px}
+ .logo h2{font-size:26px;color:#00e5ff;letter-spacing:1px;text-shadow:0 0 15px #00e5ff;border:2px solid #00e5ff;display:inline-block;padding:3px 18px;border-radius:12px;background:rgba(0,229,255,.1);margin-top:8px}
+ .tabs{display:flex;gap:16px;padding:14px 16px 6px;font-size:14px;font-weight:700;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+ .tabs span{cursor:pointer;padding:6px 2px;opacity:.6} .tabs span.active{opacity:1;color:#ffd700;border-bottom:2px solid #ffd700}
+ .search{margin:10px 16px;padding:12px;border-radius:12px;border:1px solid #333;background:#14143a;color:#fff;width:calc(100% - 32px);outline:none;font-size:14px}
+ .section{padding:6px 16px 20px} .section h3{color:#ffd700;font-size:15px;margin:16px 0 10px}
+ .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+ .card{background:linear-gradient(180deg,#1e1e4e,#12123a);border:1px solid #2a2a6e;border-radius:16px;padding:12px 6px 10px;text-align:center;cursor:pointer;position:relative}
+ .card:active{transform:scale(.94)}
+ .hot-badge{position:absolute;top:6px;right:6px;background:#ff0055;color:#fff;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:800}
+ .art{font-size:50px;line-height:1.2;filter:drop-shadow(0 0 10px rgba(255,215,0,.5))}
+ .card h4{font-size:13px;margin-top:6px;font-weight:600} .card p{color:#ffd700;font-size:13px;font-weight:800;margin-top:2px}
+ .send{margin-top:8px;background:linear-gradient(90deg,#ff0055,#ff5500);color:#fff;border:0;width:100%;padding:7px;border-radius:10px;font-weight:700;cursor:pointer}
+ .domain{margin:12px 16px;background:linear-gradient(90deg,#ff0055,#ffaa00);padding:10px;border-radius:12px;text-align:center;font-weight:800;font-size:14px}
+ .bottom-nav{position:sticky;bottom:0;background:#0a0a2e;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0;font-size:11px;text-align:center}
+ .bottom-nav div{cursor:pointer;opacity:.6} .bottom-nav div.active{opacity:1;color:#ffd700}
+ .bottom-nav b{font-size:20px;display:block}
+ #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
+ #big{font-size:150px;animation:pop .6s cubic-bezier(.68,-0.55,.27,1.55)} @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+ @keyframes floatUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-420px);opacity:0}}
+ .particle{position:absolute;font-size:28px;animation:floatUp 1.6s ease-out forwards}
+</style>
+</head>
+<body>
+<div class="phone">
+ <div class="header">
+  <div class="toprow">
+   <div class="avatar">🎁</div>
+   <div style="text-align:center;font-size:13px;color:#aaa">GifHub Live<br><b style="color:#fff;font-size:15px">Welcome Back!</b></div>
+   <div class="bal">🪙 <b id="bal">1,000,000</b><br><span>Balance</span><button onclick="recharge()">+ Recharge</button></div>
+  </div>
+  <div class="logo"><h1><span>GIF</span><b>HUB</b>.com</h1><p>🎁 SEND LOVE • SEND GIFTS</p><h2>100 GIFTS</h2></div>
+  <div class="domain">🌐 www.GifHub.com • 100 Gifts Live Now!</div>
+ </div>
+
+ <div class="tabs">
+  <span class="active" onclick="showTab('hot',this)">🔥 Hot Picks</span>
+  <span onclick="showTab('exclusive',this)">✨ Exclusive</span>
+  <span onclick="showTab('ultra',this)">👑 Ultra</span>
+  <span onclick="showTab('lucky',this)">🍀 Lucky 30</span>
+  <span onclick="showTab('cp',this)">💑 CP 20</span>
+  <span onclick="showTab('all',this)">🎁 All 100</span>
+ </div>
+ <input class="search" id="search" placeholder="🔍 Search on GifHub.com..." oninput="filter()">
+
+ <div class="section" id="sec-hot">
+  <h3>🔥 Hot Picks - GifHub.com</h3><div class="grid" id="gHot"></div>
+  <h3>💎 Trending Now</h3><div class="grid" id="gHot2"></div>
+ </div>
+ <div class="section" id="sec-exclusive" style="display:none"><h3>✨ Exclusive - Gift 50</h3><div class="grid" id="gEx"></div></div>
+ <div class="section" id="sec-ultra" style="display:none"><h3>👑 Ultra Premium</h3><div class="grid" id="gUltra"></div></div>
+ <div class="section" id="sec-lucky" style="display:none"><h3>🍀 Lucky Gift (30)</h3><div class="grid" id="gLucky"></div></div>
+ <div class="section" id="sec-cp" style="display:none"><h3>💑 CP Gift (20)</h3><div class="grid" id="gCP"></div></div>
+ <div class="section" id="sec-all" style="display:none"><h3>🎁 All 100 Gifts - GifHub.com</h3><div class="grid" id="gAll"></div></div>
+
+ <div class="bottom-nav">
+  <div class="active"><b>🏠</b>Home</div><div><b>🎙️</b>Live</div><div><b>🎁</b>Gifts</div><div><b>💬</b>Chat</div><div><b>👤</b>Profile</div>
+ </div>
+</div>
+
+<div id="overlay"><div id="big"></div><h2 id="oName"></h2><p id="oPrice" style="color:#ffd700;font-size:22px;font-weight:800"></p><p style="color:#00e5ff">Sent via GifHub.com 🎉</p><div id="parts"></div><p style="color:#aaa;margin-top:18px">Tap to close</p></div>
+
 <script>
-let room=null,coins=761,selGift=null,qty=1,soundOn=true,hubFilter='all',searchText='';
-function toggleSound(e){e.stopPropagation();soundOn=!soundOn;document.getElementById('soundBtn').innerText=soundOn?'ON':'OFF'}
-function openCoinShop(){document.getElementById('coinPanel').style.display='block';document.getElementById('coinBal2').innerText=coins}
-function closeCoinShop(){document.getElementById('coinPanel').style.display='none'}
-function buyCoins(a,rs){coins+=a;document.getElementById('myCoins').innerText=coins;document.getElementById('coinBal2').innerText=coins;alert('✅ '+a+' Coins Added! ₹'+rs);closeCoinShop();playGiftSound('castle')}
-let audioCtx=null;function playGiftSound(type){if(!soundOn)return;try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();let ctx=audioCtx,t=ctx.currentTime;function beep(f,d,v=0.3,ty='sine',dl=0){let o=ctx.createOscillator(),g=ctx.createGain();o.type=ty;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(ctx.destination);o.start(t+dl);o.stop(t+dl+d)}function boom(){let len=ctx.sampleRate*0.4;let buf=ctx.createBuffer(1,len,ctx.sampleRate);let dd=buf.getChannelData(0);for(let i=0;i<len;i++)dd[i]=(Math.random()*2-1)*(1-i/len);let s=ctx.createBufferSource();s.buffer=buf;let g=ctx.createGain();g.gain.value=0.4;s.connect(g);g.connect(ctx.destination);s.start(t)}if(type=='dragon'){beep(150,0.4,0.5,'sawtooth',0);beep(600,0.5,0.4,'sine',0.4);boom()}else if(type=='castle'||type=='ring'){beep(880,0.2,0.4,'sine',0);beep(1100,0.2,0.4,'sine',0.15);beep(1320,0.4,0.4,'sine',0.3);beep(1760,0.6,0.3,'sine',0.45)}else if(type=='coin'){beep(1320,0.15,0.5,'sine',0);beep(1760,0.15,0.5,'sine',0.12);beep(2093,0.4,0.5,'sine',0.24)}else if(type=='fire'){boom();beep(1500,0.2,0.3,'sine',0.15)}else if(type=='kiss'){beep(600,0.15,0.4,'sine',0);beep(1200,0.3,0.4,'sine',0.3)}else{beep(523,0.15,0.4,'sine',0);beep(659,0.15,0.4,'sine',0.12);beep(784,0.3,0.4,'sine',0.24)}}catch(e){}}
-let gifts=[
-{emoji:'💋',name:'Kiss',price:10,sound:'kiss',parts:['💋','❤️'],cat:'love'},
-{emoji:'🌹',name:'Rose',price:25,sound:'kiss',parts:['🌹','❤️'],cat:'love'},
-{emoji:'🍫',name:'Chocolate',price:50,sound:'kiss',parts:['🍫','❤️'],cat:'love'},
-{emoji:'🍺',name:'Beer',price:99,sound:'kiss',parts:['🍺','🍻'],cat:'love'},
-{emoji:'🧸',name:'Teddy',price:199,sound:'kiss',parts:['🧸','❤️'],cat:'love'},
-{emoji:'🎤',name:'Super Mic',price:299,sound:'normal',parts:['🎤','🎵'],cat:'trending'},
-{emoji:'🦋',name:'Butterfly',price:499,sound:'ring',parts:['🦋','✨'],cat:'love'},
-{emoji:'🎆',name:'Fireworks',price:999,sound:'fire',parts:['🎆','💥'],cat:'trending'},
-{emoji:'💐',name:'Bouquet',price:1499,sound:'ring',parts:['💐','🌹'],cat:'love'},
-{emoji:'🌌',name:'Galaxy',price:2999,sound:'ring',parts:['🌌','⭐'],cat:'trending'},
-{emoji:'🎡',name:'Ferris Wheel',price:4999,sound:'normal',parts:['🎡','✨'],cat:'trending'},
-{emoji:'🚀',name:'Rocket',price:7999,sound:'jet',parts:['🚀','🔥'],cat:'trending'},
-{emoji:'🐉',name:'Fire Dragon',price:8888,sound:'dragon',parts:['🐉','🔥'],cat:'trending'},
-{emoji:'💍',name:'Diamond Ring',price:9999,sound:'ring',parts:['💍','💎'],cat:'love'},
-{emoji:'👑',name:'King Crown',price:12999,sound:'castle',parts:['👑','💎'],cat:'vip'},
-{emoji:'🦄',name:'Unicorn',price:19999,sound:'ring',parts:['🦄','🌈'],cat:'vip'},
-{emoji:'🏰',name:'Dream Castle',price:29999,sound:'castle',parts:['🏰','✨'],cat:'vip'},
-{emoji:'🏎️',name:'Ferrari',price:49999,sound:'dragon',parts:['🏎️','🔥'],cat:'luxury'},
-{emoji:'🦁',name:'Lion King',price:69999,sound:'dragon',parts:['🦁','👑'],cat:'vip'},
-{emoji:'✈️',name:'Private Jet',price:99999,sound:'jet',parts:['✈️','☁️'],cat:'luxury'},
-{emoji:'🛥️',name:'Luxury Yacht',price:149999,sound:'jet',parts:['🛥️','🌊'],cat:'luxury'},
-{emoji:'🏝️',name:'Private Island',price:199999,sound:'castle',parts:['🏝️','🌴'],cat:'luxury'},
-{emoji:'💎',name:'Diamond World',price:299999,sound:'castle',parts:['💎','✨'],cat:'luxury'},
-{emoji:'🌍',name:'World King',price:500000,sound:'dragon',parts:['🌍','👑','🔥'],cat:'trending'},
-{emoji:'🪙',name:'COIN GIFT 100',price:100,sound:'coin',parts:['🪙','💰'],cat:'coin',isCoin:true},
-{emoji:'🪙',name:'COIN GIFT 1000',price:1000,sound:'coin',parts:['🪙','💰'],cat:'coin',isCoin:true},
-{emoji:'🪙',name:'COIN GIFT 10000',price:10000,sound:'coin',parts:['🪙','💰','💎'],cat:'coin',isCoin:true},
-];
-let leaderboard={};function loadBoard(){try{let s=localStorage.getItem('voxo_board');if(s)leaderboard=JSON.parse(s)}catch(e){}}function saveBoard(){localStorage.setItem('voxo_board',JSON.stringify(leaderboard))}function addToBoard(name,giftName,price){if(!leaderboard[name])leaderboard[name]={total:0,count:0,lastGift:''};leaderboard[name].total+=price;leaderboard[name].count+=1;leaderboard[name].lastGift=giftName;saveBoard()}
-function openBoard(){document.getElementById('boardPanel').style.display='block';renderBoard()}function closeBoard(){document.getElementById('boardPanel').style.display='none'}
-function renderBoard(){let arr=Object.keys(leaderboard).map(n=>({name:n,...leaderboard[n]})).sort((a,b)=>b.total-a.total);let h='';if(arr.length==0)h='<p style="color:#aaa">Innum yaarum gift anuppala! Nee dhaan first King aagu! 👑</p>';arr.forEach((u,i)=>{let medal=i==0?'👑🥇':i==1?'🥈':i==2?'🥉':'#'+(i+1);let crown=i==0?'style="background:#3a2a00;border:2px solid #FFD700"':'';h+=`<div style="display:flex;justify-content:space-between;align-items:center;background:#222;padding:12px;border-radius:12px;margin:6px 0" ${crown}><div style="text-align:left"><b>${medal} ${u.name}</b><div style="font-size:12px;color:#aaa">${u.count} gifts • Last: ${u.lastGift}</div></div><div style="text-align:right"><b style="color:#FFD700">🪙 ${u.total.toLocaleString('en-IN')}</b><div style="font-size:11px">${i==0?'👑 KING':''}</div></div></div>`});document.getElementById('boardList').innerHTML=h;let myName=document.getElementById('name').value||'Guest';let myIdx=arr.findIndex(u=>u.name==myName);if(myIdx>=0){document.getElementById('myRank').innerText='#'+(myIdx+1)+' - '+arr[myIdx].total+' Coins!';document.getElementById('myTotal').innerText=arr[myIdx].total}else{document.getElementById('myRank').innerText='Unakku innum gift illa';document.getElementById('myTotal').innerText='0'}}
-function filterHub(type,el){hubFilter=type;document.querySelectorAll('#hubTabs span').forEach(s=>s.classList.remove('active'));el.classList.add('active');renderGifts()}function searchGift(v){searchText=v.toLowerCase();renderGifts()}
-function renderGifts(){let h='';let filtered=gifts.filter(g=>{if(searchText&&!g.name.toLowerCase().includes(searchText)&&!g.emoji.includes(searchText))return false;if(hubFilter=='all')return true;if(hubFilter=='trending')return g.cat=='trending'||g.price>=8888;if(hubFilter=='vip')return g.price>=12999;if(hubFilter=='coin')return g.cat=='coin';if(hubFilter=='love')return g.cat=='love';if(hubFilter=='luxury')return g.cat=='luxury';return true});if(filtered.length==0)h='<p>Gift illa machi!</p>';filtered.forEach((g)=>{let ri=gifts.indexOf(g);h+=`<div class="gift ${selGift==ri?'sel':''}" onclick="selectGift(${ri})"><div class="emoji">${g.emoji}</div><div>${g.name}</div><div class="price">🪙 ${g.price}</div>${g.price>=99999?'<div style="font-size:10px;color:#FFD700">👑 VIP</div>':''}</div>`});document.getElementById('giftList').innerHTML=h}
-function selectGift(i){selGift=i;renderGifts();playGiftSound(gifts[i].sound)}function setQty(q){qty=q;document.getElementById('qty').innerText=q}function openGift(){document.getElementById('giftPanel').style.display='block';renderGifts()}function closeGift(){document.getElementById('giftPanel').style.display='none'}
-function showBigGift(emoji,fromUser,giftName,parts,soundType,isCoin){let el=document.getElementById('bigGift');el.innerHTML='';let big=document.createElement('div');big.innerText=emoji;big.style.fontSize='140px';big.style.animation='giftAnim 2.8s ease-in-out';el.appendChild(big);let t=document.createElement('div');t.innerText=isCoin?fromUser+' sent '+giftName+' Coins! 🪙':fromUser+' sent '+giftName+'! 🎉';t.style.cssText='font-size:22px;margin-top:10px;font-weight:bold';el.appendChild(t);let s=document.createElement('div');s.innerText='x'+qty+' • VOXO Gift';s.style.color='#FFD700';el.appendChild(s);el.style.display='flex';playGiftSound(soundType||'normal');for(let i=0;i<30;i++){let p=document.createElement('div');p.className='particle';p.innerText=parts[Math.floor(Math.random()*parts.length)];p.style.left=Math.random()*90+'%';p.style.animationDelay=(Math.random()*0.8)+'s';el.appendChild(p)}if(navigator.vibrate)navigator.vibrate([100,50,100]);setTimeout(()=>{el.style.display='none'},3000)}
-async function sendGift(){if(selGift==null){alert('Gift select pannu!');return}let g=gifts[selGift];let total=g.price*qty;if(coins<total){alert('Coins podhadhu! Recharge pannu!');openCoinShop();return}coins-=total;document.getElementById('myCoins').innerText=coins;let name=document.getElementById('name').value||'Guest';addToBoard(name,g.name,total);showBigGift(g.emoji,name,g.name,g.parts,g.sound,g.isCoin);closeGift();if(room){let msg=JSON.stringify({type:'gift',emoji:g.emoji,name:g.name,from:name,qty:qty,parts:g.parts,sound:g.sound,isCoin:g.isCoin,price:g.price});await room.localParticipant.publishData(new TextEncoder().encode(msg),{reliable:true})}}
-async function join(){let name=document.getElementById('name').value||'Guest';let roomName=document.getElementById('room').value||'Tamil Room';let key=document.getElementById('key').value;document.getElementById('status').innerText='Connecting...';try{let r=await fetch('/get-token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voxoKey:key,room:roomName,username:name})});let d=await r.json();if(d.error){document.getElementById('status').innerText=d.error;return}room=new LivekitClient.Room();room.on('participantConnected',p=>show());room.on('participantDisconnected',p=>show());room.on('dataReceived',(payload)=>{try{let m=JSON.parse(new TextDecoder().decode(payload));if(m.type=='gift'){qty=m.qty;addToBoard(m.from,m.name,(m.price||0)*m.qty);showBigGift(m.emoji,m.from,m.name,m.parts||['✨','❤️'],m.sound,m.isCoin)}}catch(e){}});await room.connect('wss://voxo-v8gwy8d1.livekit.cloud',d.token);await room.localParticipant.setMicrophoneEnabled(true);document.getElementById('status').innerText='✅ LIVE! Mic ON!';show()}catch(e){document.getElementById('status').innerText='ERROR: '+e.message}}function show(){let h='Room Members:<br>';room.remoteParticipants.forEach(p=>{h+='🎤 '+p.identity+'<br>'});h+='🎤 You (Host)';document.getElementById('users').innerHTML=h}
-loadBoard();renderGifts();
-</script></body></html>
+let balance=1000000;
+const hot=[
+ {n:"Crown",p:50000,i:"👑",hot:1},{n:"Diamond",p:10000,i:"💎",hot:1},{n:"Dragon",p:1000000,i:"🐉",hot:1},
+ {n:"Yacht",p:100000,i:"🛥️"},{n:"Car",p:30000,i:"🚗"},{n:"Rocket",p:5000,i:"🚀"},
+ {n:"Bouquet",p:5000,i:"💐"},{n:"Treasure",p:5000,i:"💰"},{n:"Guitar",p:20000,i:"🎸"}];
+const hot2=[
+ {n:"Peacock",p:20000,i:"🦚"},{n:"Love Heart",p:10000,i:"❤️"},{n:"Golden Eagle",p:25000,i:"🦅"},
+ {n:"Fireworks",p:40000,i:"🎆"},{n:"Jet",p:30000,i:"✈️"},{n:"SUV",p:30000,i:"🚙"},
+ {n:"Palace",p:50000,i:"🏰"},{n:"Rose",p:5000,i:"🌹"},{n:"Coin",p:1000,i:"🪙"}];
+const exclusive=[
+ {n:"Kiss",p:10,i:"💋"},{n:"Chocolate",p:50,i:"🍫"},{n:"Beer",p:99,i:"🍺"},{n:"Teddy",p:199,i:"🧸"},
+ {n:"Red Rose",p:499,i:"🌹"},{n:"Lucky Star",p:999,i:"⭐"},{n:"Butterfly",p:2999,i:"🦋"},{n:"Bouquet",p:7999,i:"💐"},{n:"Diamond Ring",p:9999,i:"💍"},
+ {n:"Golden Castle",p:19999,i:"🏰"},{n:"Prince Crown",p:29999,i:"👑"},{n:"Fire Phoenix",p:49999,i:"🔥"},{n:"Golden Dragon",p:69999,i:"🐉"},{n:"Diamond World",p:100000,i:"🌍"},
+ {n:"Sports Car",p:10,i:"🏎️"},{n:"Panda Hug",p:50,i:"🐼"},{n:"Royal Crown",p:99,i:"👑"},{n:"Unicorn",p:299,i:"🦄"},
+ {n:"DJ Beat",p:499,i:"🎧"},{n:"Lion King",p:699,i:"🦁"},{n:"Dragon Fire",p:999,i:"🐉"},{n:"Butterfly",p:1299,i:"🦋"},{n:"Diamond Heart",p:1999,i:"💎"},{n:"Rocket",p:2499,i:"🚀"},
+ {n:"Birthday Cake",p:2999,i:"🎂"},{n:"Luxury Yacht",p:3999,i:"🛥️"},{n:"Dream Castle",p:4999,i:"🏰"},{n:"Big Gift",p:5999,i:"🎁"},{n:"Golden Mic",p:6999,i:"🎙️"},{n:"Angel Wings",p:7999,i:"👼"}];
+const ultra=[
+ {n:"Sapphire Heart",p:9999,i:"💙"},{n:"Super Bike",p:12000,i:"🏍️"},{n:"Emerald Palace",p:15000,i:"💚"},
+ {n:"Golden Throne",p:19999,i:"👑"},{n:"Phoenix King",p:49999,i:"🔥"},{n:"Cosmic Galaxy",p:99999,i:"🌌"}];
+const cp=[
+ {n:"CP Heart Kiss",p:99,i:"💋"},{n:"CP Teddy Hug",p:199,i:"🧸"},{n:"CP Love Balloons",p:299,i:"🎈"},
+ {n:"CP Rose Bouquet",p:499,i:"🌹"},{n:"CP Couple Hearts",p:699,i:"💞"},{n:"CP Date Night",p:999,i:"🌙"},
+ {n:"CP Love Lock",p:1499,i:"🔒"},{n:"CP Diamond Duo",p:1999,i:"💎"},{n:"CP Bike Ride",p:2999,i:"🏍️"},
+ {n:"CP Romantic Dinner",p:3999,i:"🍽️"},{n:"CP Couple Watch",p:4999,i:"⌚"},{n:"CP Love Castle",p:6999,i:"🏰"},
+ {n:"CP Sapphire Pair",p:9999,i:"💙"},{n:"CP Golden Couple",p:12999,i:"💛"},{n:"CP Royal Wedding",p:19999,i:"💍"},
+ {n:"CP Honeymoon Trip",p:29999,i:"✈️"},{n:"CP Couple Yacht",p:39999,i:"🛥️"},{n:"CP Phoenix Pair",p:49999,i:"🔥"},
+ {n:"CP Diamond Palace",p:69999,i:"👑"},{n:"CP Eternal Galaxy",p:99999,i:"🌌"}];
+const lucky=[
+ {n:"Lucky Clover",p:10,i:"🍀"},{n:"Lucky Red Packet",p:20,i:"🧧"},{n:"Lucky Candy",p:30,i:"🍬"},{n:"Lucky Coin",p:50,i:"🪙"},
+ {n:"Lucky Star",p:100,i:"⭐"},{n:"Lucky Cat",p:200,i:"🐱"},{n:"Lucky Elephant",p:300,i:"🐘"},{n:"Lucky Dice",p:500,i:"🎲"},
+ {n:"Lucky Magnet",p:699,i:"🧲"},{n:"Lucky Rainbow",p:999,i:"🌈"},{n:"Lucky Money Bag",p:1500,i:"💰"},{n:"Lucky Gold Bar",p:2000,i:"🪖"},
+ {n:"Lucky Slot",p:3000,i:"🎰"},{n:"Lucky Horse",p:4000,i:"🐎"},{n:"Lucky Diamond",p:5000,i:"💎"},{n:"Lucky Unicorn",p:6000,i:"🦄"},
+ {n:"Lucky Crown",p:7000,i:"👑"},{n:"Lucky Lion",p:8000,i:"🦁"},{n:"Lucky Sapphire King",p:9999,i:"💙"},{n:"Lucky Trophy",p:10000,i:"🏆"},
+ {n:"Lucky Peacock",p:12000,i:"🦚"},{n:"Lucky Dragon",p:15000,i:"🐉"},{n:"Lucky Phoenix",p:18000,i:"🔥"},{n:"Lucky Yacht",p:20000,i:"🛥️"},
+ {n:"Lucky Sports Car",p:25000,i:"🏎️"},{n:"Lucky Palace",p:30000,i:"🏰"},{n:"Lucky King Throne",p:35000,i:"👑"},{n:"Lucky Private Jet",p:40000,i:"✈️"},
+ {n:"Lucky Royal Wedding",p:45000,i:"💍"},{n:"Lucky Galaxy King",p:50000,i:"🌌"}];
+
+function render(list,id){
+ const grid=document.getElementById(id); if(!grid) return;
+ list.forEach(g=>{
+  const d=document.createElement('div'); d.className='card'; d.dataset.name=g.n.toLowerCase();
+  d.innerHTML=`${g.hot?'<span class="hot-badge">HOT</span>':''}<div class="art">${g.i}</div><h4>${g.n}</h4><p>🪙 ${g.p>=1000?(g.p/1000)+'K':g.p}</p><button class="send">Send 🎁</button>`;
+  d.onclick=()=>sendGift(g); grid.appendChild(d);
+ });
+}
+render(hot,'gHot'); render(hot2,'gHot2'); render(exclusive,'gEx'); render(ultra,'gUltra'); render(cp,'gCP'); render(lucky,'gLucky');
+render([...hot,...hot2,...exclusive,...ultra,...cp,...lucky].slice(0,100),'gAll');
+
+function showTab(name,el){
+ document.querySelectorAll('.tabs span').forEach(s=>s.classList.remove('active')); el.classList.add('active');
+ ['hot','exclusive','ultra','lucky','cp','all'].forEach(t=>document.getElementById('sec-'+t).style.display=t===name?'block':'none');
+}
+function sendGift(g){
+ if(balance<g.p){alert('Balance low! Recharge pannu machi!');return;}
+ balance-=g.p; document.getElementById('bal').textContent=balance.toLocaleString('en-IN');
+ const o=document.getElementById('overlay');
+ document.getElementById('big').textContent=g.i;
+ document.getElementById('oName').textContent=g.n+' Sent! 🎉';
+ document.getElementById('oPrice').textContent='🪙 '+g.p.toLocaleString('en-IN');
+ const box=document.getElementById('parts'); box.innerHTML='';
+ for(let i=0;i<30;i++){const p=document.createElement('span'); p.className='particle'; p.textContent=['💖','✨','🌟','💎','🎉','🔥','💰','🍀','💑'][i%9]; p.style.left=(20+Math.random()*60)+'%'; p.style.top='70%'; box.appendChild(p);}
+ o.style.display='flex'; if(navigator.vibrate) navigator.vibrate([60,30,60]);
+ o.onclick=()=>o.style.display='none';
+}
+function recharge(){balance+=50000; document.getElementById('bal').textContent=balance.toLocaleString('en-IN'); alert('50000 coins added! 🎉');}
+function filter(){const q=document.getElementById('search').value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.name.includes(q)?'':'none';});}
+</script>
+</body>
+</html>

@@ -6,81 +6,112 @@
 <title>GifHub.com - 100 Gifts</title>
 <style>
  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
- body{background:#02021a;color:#fff;min-height:100vh;padding:10px}
- .phone{max-width:430px;margin:0 auto;background:linear-gradient(180deg,#1a0a3a,#0a0a2e);border-radius:28px;overflow:hidden;border:1px solid #333;box-shadow:0 0 60px rgba(255,0,85,.5);min-height:90vh}
- .header{padding:16px 16px 4px;background:radial-gradient(circle at 50% 0%,#3a0a6e,transparent 70%)}
+ body{background:#000;color:#fff;min-height:100vh}
+ .phone{max-width:430px;margin:0 auto;background:#000;min-height:100vh;padding-bottom:20px}
+ .header{padding:14px 16px 6px;background:#000;position:sticky;top:0;z-index:10;border-bottom:1px solid #222}
  .toprow{display:flex;justify-content:space-between;align-items:center}
- .avatar{width:44px;height:44px;border-radius:50%;border:2px solid #ffd700;background:linear-gradient(45deg,#ff0055,#ffaa00);display:flex;align-items:center;justify-content:center;font-size:22px}
- .bal{text-align:right} .bal b{color:#ffd700;font-size:18px} .bal span{font-size:11px;color:#aaa} .bal button{background:#00aaff;color:#fff;border:0;padding:5px 12px;border-radius:12px;font-size:11px;font-weight:800;margin-left:4px;cursor:pointer}
- .logo{text-align:center;margin:16px 0 6px}
- .logo h1{font-size:42px;letter-spacing:1px}
- .logo h1 span{color:#ff0055} .logo h1 b{color:#ffd700}
- .logo p{font-size:13px;color:#00e5ff;letter-spacing:2px;margin-top:4px}
- .logo h2{font-size:26px;color:#00e5ff;letter-spacing:1px;text-shadow:0 0 15px #00e5ff;border:2px solid #00e5ff;display:inline-block;padding:3px 18px;border-radius:12px;background:rgba(0,229,255,.1);margin-top:8px}
- .tabs{display:flex;gap:16px;padding:14px 16px 6px;font-size:14px;font-weight:700;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
- .tabs span{cursor:pointer;padding:6px 2px;opacity:.6} .tabs span.active{opacity:1;color:#ffd700;border-bottom:2px solid #ffd700}
- .search{margin:10px 16px;padding:12px;border-radius:12px;border:1px solid #333;background:#14143a;color:#fff;width:calc(100% - 32px);outline:none;font-size:14px}
+ .left{display:flex;align-items:center;gap:10px}
+ .avatar{width:42px;height:42px;border-radius:50%;border:2px solid #ffd700;background:linear-gradient(45deg,#ff0055,#ffaa00);display:flex;align-items:center;justify-content:center;font-size:20px}
+ .icons{display:flex;align-items:center;gap:14px}
+ .bell{position:relative;font-size:24px;cursor:pointer}
+ .bell-dot{position:absolute;top:-2px;right:-2px;width:10px;height:10px;background:#ff0055;border-radius:50%;border:2px solid #000}
+ .bal-box{background:#111;border:1px solid #333;border-radius:20px;padding:6px 12px;display:flex;align-items:center;gap:6px}
+ .bal-box b{color:#ffd700;font-size:16px}
+ .bal-box button{background:#ffd700;color:#000;border:0;padding:3px 8px;border-radius:10px;font-weight:800;cursor:pointer}
+ .logo{text-align:center;margin:14px 0 6px}
+ .logo h1{font-size:42px} .logo h1 span{color:#ff0055} .logo h1 b{color:#ffd700}
+ .logo p{font-size:12px;color:#00e5ff;letter-spacing:2px}
+ .logo h2{font-size:26px;color:#00e5ff;border:2px solid #00e5ff;display:inline-block;padding:3px 18px;border-radius:12px;margin-top:8px;box-shadow:0 0 15px rgba(0,229,255,.4)}
+ .tabs{display:flex;gap:8px;padding:14px 16px 6px;font-size:16px;font-weight:800;justify-content:center}
+ .tabs span{cursor:pointer;padding:8px 14px;opacity:.6;background:#111;border-radius:20px;border:1px solid #333} .tabs span.active{opacity:1;color:#000;background:#ffd700;border-color:#ffd700}
+ .search{margin:10px 16px;padding:12px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;width:calc(100% - 32px);outline:none}
  .section{padding:6px 16px 20px} .section h3{color:#ffd700;font-size:15px;margin:16px 0 10px}
  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
- .card{background:linear-gradient(180deg,#1e1e4e,#12123a);border:1px solid #2a2a6e;border-radius:16px;padding:12px 6px 10px;text-align:center;cursor:pointer;position:relative}
+ .card{background:linear-gradient(180deg,#1a1a1a,#0a0a0a);border:1px solid #333;border-radius:18px;padding:12px 6px 10px;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.8)}
  .card:active{transform:scale(.94)}
- .hot-badge{position:absolute;top:6px;right:6px;background:#ff0055;color:#fff;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:800}
- .art{font-size:50px;line-height:1.2;filter:drop-shadow(0 0 10px rgba(255,215,0,.5))}
- .card h4{font-size:13px;margin-top:6px;font-weight:600} .card p{color:#ffd700;font-size:13px;font-weight:800;margin-top:2px}
- .send{margin-top:8px;background:linear-gradient(90deg,#ff0055,#ff5500);color:#fff;border:0;width:100%;padding:7px;border-radius:10px;font-weight:700;cursor:pointer}
- .domain{margin:12px 16px;background:linear-gradient(90deg,#ff0055,#ffaa00);padding:10px;border-radius:12px;text-align:center;font-weight:800;font-size:14px}
- .bottom-nav{position:sticky;bottom:0;background:#0a0a2e;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0;font-size:11px;text-align:center}
+ .art{font-size:64px;line-height:1.2;filter:drop-shadow(0 8px 12px rgba(0,0,0,.6)) drop-shadow(0 0 15px rgba(255,215,0,.4))}
+ .card h4{font-size:14px;font-weight:800;margin-top:6px} .card p{color:#ffd700;font-size:13px;font-weight:800;margin-top:2px}
+ .send{margin-top:8px;background:linear-gradient(90deg,#ff0055,#ff5500);color:#fff;border:0;width:100%;padding:8px;border-radius:10px;font-weight:700;cursor:pointer}
+ .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0 16px;font-size:11px;text-align:center;z-index:10}
  .bottom-nav div{cursor:pointer;opacity:.6} .bottom-nav div.active{opacity:1;color:#ffd700}
  .bottom-nav b{font-size:20px;display:block}
- #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
- #big{font-size:150px;animation:pop .6s cubic-bezier(.68,-0.55,.27,1.55)} @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+ #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:100;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
+ #big{font-size:150px;filter:drop-shadow(0 0 30px rgba(255,215,0,.6));animation:pop .6s} @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
  @keyframes floatUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-420px);opacity:0}}
  .particle{position:absolute;font-size:28px;animation:floatUp 1.6s ease-out forwards}
+ #notif{display:none;position:fixed;top:60px;right:16px;background:#111;border:1px solid #333;padding:12px 14px;border-radius:12px;z-index:99;width:260px;max-width:80vw}
 </style>
 </head>
 <body>
 <div class="phone">
  <div class="header">
   <div class="toprow">
-   <div class="avatar">🎁</div>
-   <div style="text-align:center;font-size:13px;color:#aaa">GifHub Live<br><b style="color:#fff;font-size:15px">Welcome Back!</b></div>
-   <div class="bal">🪙 <b id="bal">1,000,000</b><br><span>Balance</span><button onclick="recharge()">+ Recharge</button></div>
+   <div class="left"><div class="avatar">🎁</div><div><b style="font-size:14px">GifHub.com</b><br><span style="font-size:11px;color:#aaa">Welcome Back!</span></div></div>
+   <div class="icons">
+    <div class="bal-box">🪙 <b id="bal">15,000</b> <button onclick="recharge()">+</button></div>
+    <div class="bell" onclick="showNotif()">🔔<span class="bell-dot" id="bellDot"></span></div>
+   </div>
   </div>
-  <div class="logo"><h1><span>GIF</span><b>HUB</b>.com</h1><p>🎁 SEND LOVE • SEND GIFTS</p><h2>100 GIFTS</h2></div>
-  <div class="domain">🌐 www.GifHub.com • 100 Gifts Live Now!</div>
+  <div class="logo"><h1><span>GIF</span><b>HUB</b>.com</h1><p>SEND LOVE • SEND GIFTS</p><h2>100 GIFTS</h2></div>
  </div>
 
+ <div id="notif"><b>🔔 Notifications</b><p style="font-size:13px;margin-top:8px">🎉 500 coins bonus added!</p><p style="font-size:13px;margin-top:6px">💎 Someone sent you Diamond!</p><button onclick="document.getElementById('notif').style.display='none'" style="margin-top:10px;background:#ff0055;color:#fff;border:0;padding:6px 12px;border-radius:8px;width:100%">Close</button></div>
+
  <div class="tabs">
-  <span class="active" onclick="showTab('hot',this)">🔥 Hot Picks</span>
-  <span onclick="showTab('exclusive',this)">✨ Exclusive</span>
-  <span onclick="showTab('ultra',this)">👑 Ultra</span>
-  <span onclick="showTab('lucky',this)">🍀 Lucky 30</span>
-  <span onclick="showTab('cp',this)">💑 CP 20</span>
-  <span onclick="showTab('all',this)">🎁 All 100</span>
+  <span class="active" onclick="showTab('gift',this)">🎁 Gift</span>
+  <span onclick="showTab('lucky',this)">🍀 Lucky Gift</span>
+  <span onclick="showTab('cp',this)">💑 CP Gift</span>
  </div>
  <input class="search" id="search" placeholder="🔍 Search on GifHub.com..." oninput="filter()">
 
- <div class="section" id="sec-hot">
-  <h3>🔥 Hot Picks - GifHub.com</h3><div class="grid" id="gHot"></div>
+ <!-- 1. GIFT -->
+ <div class="section" id="sec-gift">
+  <h3>🎁 Gift - Hot Picks</h3><div class="grid" id="gHot"></div>
   <h3>💎 Trending Now</h3><div class="grid" id="gHot2"></div>
+  <h3>✨ Exclusive - 50 Gifts</h3><div class="grid" id="gEx"></div>
+  <h3>👑 Ultra Premium</h3><div class="grid" id="gUltra"></div>
  </div>
- <div class="section" id="sec-exclusive" style="display:none"><h3>✨ Exclusive - Gift 50</h3><div class="grid" id="gEx"></div></div>
- <div class="section" id="sec-ultra" style="display:none"><h3>👑 Ultra Premium</h3><div class="grid" id="gUltra"></div></div>
- <div class="section" id="sec-lucky" style="display:none"><h3>🍀 Lucky Gift (30)</h3><div class="grid" id="gLucky"></div></div>
- <div class="section" id="sec-cp" style="display:none"><h3>💑 CP Gift (20)</h3><div class="grid" id="gCP"></div></div>
- <div class="section" id="sec-all" style="display:none"><h3>🎁 All 100 Gifts - GifHub.com</h3><div class="grid" id="gAll"></div></div>
 
- <div class="bottom-nav">
-  <div class="active"><b>🏠</b>Home</div><div><b>🎙️</b>Live</div><div><b>🎁</b>Gifts</div><div><b>💬</b>Chat</div><div><b>👤</b>Profile</div>
+ <!-- 2. LUCKY GIFT -->
+ <div class="section" id="sec-lucky" style="display:none">
+  <h3>🍀 Lucky Gift (30)</h3><p style="color:#00e5ff;font-size:13px;margin-bottom:10px">Lucky-a feel panna gift anuppu!</p>
+  <div class="grid" id="gLucky"></div>
  </div>
+
+ <!-- 3. CP GIFT -->
+ <div class="section" id="sec-cp" style="display:none">
+  <h3>💑 CP Gift (20)</h3><p style="color:#ff55aa;font-size:13px;margin-bottom:10px">Couple-ku special gift!</p>
+  <div class="grid" id="gCP"></div>
+ </div>
+ <div style="height:70px"></div>
+ <div class="bottom-nav"><div class="active"><b>🏠</b>Home</div><div><b>🎙️</b>Live</div><div><b>🎁</b>Gifts</div><div><b>💬</b>Chat</div><div><b>👤</b>Profile</div></div>
 </div>
 
 <div id="overlay"><div id="big"></div><h2 id="oName"></h2><p id="oPrice" style="color:#ffd700;font-size:22px;font-weight:800"></p><p style="color:#00e5ff">Sent via GifHub.com 🎉</p><div id="parts"></div><p style="color:#aaa;margin-top:18px">Tap to close</p></div>
 
 <script>
-let balance=1000000;
+let balance=15000;
+let audioCtx;
+function playHDSound(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  let t = audioCtx.currentTime;
+  [880,1320,1760].forEach((freq,i)=>{
+    let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
+    osc.type='sine'; osc.frequency.value=freq;
+    gain.gain.setValueAtTime(0,t+i*0.08); gain.gain.linearRampToValueAtTime(0.25,t+i*0.08+0.02); gain.gain.exponentialRampToValueAtTime(0.001,t+i*0.08+0.8);
+    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t+i*0.08); osc.stop(t+i*0.08+0.9);
+  });
+  if(navigator.vibrate) navigator.vibrate([60,30,60]);
+}
+function playCoinSound(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  let t = audioCtx.currentTime; let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
+  osc.type='triangle'; osc.frequency.setValueAtTime(1500,t); osc.frequency.exponentialRampToValueAtTime(2500,t+0.12);
+  gain.gain.setValueAtTime(0.3,t); gain.gain.exponentialRampToValueAtTime(0.001,t+0.3);
+  osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t); osc.stop(t+0.3);
+}
 const hot=[
- {n:"Crown",p:50000,i:"👑",hot:1},{n:"Diamond",p:10000,i:"💎",hot:1},{n:"Dragon",p:1000000,i:"🐉",hot:1},
+ {n:"Crown",p:50000,i:"👑"},{n:"Diamond",p:10000,i:"💎"},{n:"Dragon",p:1000000,i:"🐉"},
  {n:"Yacht",p:100000,i:"🛥️"},{n:"Car",p:30000,i:"🚗"},{n:"Rocket",p:5000,i:"🚀"},
  {n:"Bouquet",p:5000,i:"💐"},{n:"Treasure",p:5000,i:"💰"},{n:"Guitar",p:20000,i:"🎸"}];
 const hot2=[
@@ -119,30 +150,32 @@ function render(list,id){
  const grid=document.getElementById(id); if(!grid) return;
  list.forEach(g=>{
   const d=document.createElement('div'); d.className='card'; d.dataset.name=g.n.toLowerCase();
-  d.innerHTML=`${g.hot?'<span class="hot-badge">HOT</span>':''}<div class="art">${g.i}</div><h4>${g.n}</h4><p>🪙 ${g.p>=1000?(g.p/1000)+'K':g.p}</p><button class="send">Send 🎁</button>`;
+  d.innerHTML=`<div class="art">${g.i}</div><h4>${g.n}</h4><p>🪙 ${g.p.toLocaleString('en-IN')}</p><button class="send">Send 🎁</button>`;
   d.onclick=()=>sendGift(g); grid.appendChild(d);
  });
 }
 render(hot,'gHot'); render(hot2,'gHot2'); render(exclusive,'gEx'); render(ultra,'gUltra'); render(cp,'gCP'); render(lucky,'gLucky');
-render([...hot,...hot2,...exclusive,...ultra,...cp,...lucky].slice(0,100),'gAll');
 
 function showTab(name,el){
  document.querySelectorAll('.tabs span').forEach(s=>s.classList.remove('active')); el.classList.add('active');
- ['hot','exclusive','ultra','lucky','cp','all'].forEach(t=>document.getElementById('sec-'+t).style.display=t===name?'block':'none');
+ ['gift','lucky','cp'].forEach(t=>document.getElementById('sec-'+t).style.display=t===name?'block':'none');
 }
+function showNotif(){const n=document.getElementById('notif'); n.style.display=n.style.display==='block'?'none':'block'; document.getElementById('bellDot').style.display='none';}
 function sendGift(g){
- if(balance<g.p){alert('Balance low! Recharge pannu machi!');return;}
+ playCoinSound();
+ if(balance<g.p){alert('Balance low! Recharge pannu machi! Balance: '+balance.toLocaleString('en-IN'));return;}
  balance-=g.p; document.getElementById('bal').textContent=balance.toLocaleString('en-IN');
+ playHDSound();
  const o=document.getElementById('overlay');
  document.getElementById('big').textContent=g.i;
  document.getElementById('oName').textContent=g.n+' Sent! 🎉';
  document.getElementById('oPrice').textContent='🪙 '+g.p.toLocaleString('en-IN');
  const box=document.getElementById('parts'); box.innerHTML='';
  for(let i=0;i<30;i++){const p=document.createElement('span'); p.className='particle'; p.textContent=['💖','✨','🌟','💎','🎉','🔥','💰','🍀','💑'][i%9]; p.style.left=(20+Math.random()*60)+'%'; p.style.top='70%'; box.appendChild(p);}
- o.style.display='flex'; if(navigator.vibrate) navigator.vibrate([60,30,60]);
+ o.style.display='flex';
  o.onclick=()=>o.style.display='none';
 }
-function recharge(){balance+=50000; document.getElementById('bal').textContent=balance.toLocaleString('en-IN'); alert('50000 coins added! 🎉');}
+function recharge(){balance+=10000; document.getElementById('bal').textContent=balance.toLocaleString('en-IN'); playCoinSound(); alert('10,000 coins added! 🎉');}
 function filter(){const q=document.getElementById('search').value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.name.includes(q)?'':'none';});}
 </script>
 </body>

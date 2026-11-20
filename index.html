@@ -3,180 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GifHub.com - 100 Gifts</title>
+<title>Lucky Gift App - Final</title>
 <style>
- *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
- body{background:#000;color:#fff;min-height:100vh}
- .phone{max-width:430px;margin:0 auto;background:#000;min-height:100vh;padding-bottom:20px}
- .header{padding:14px 16px 6px;background:#000;position:sticky;top:0;z-index:10;border-bottom:1px solid #222}
- .toprow{display:flex;justify-content:space-between;align-items:center}
- .left{display:flex;align-items:center;gap:10px}
- .avatar{width:42px;height:42px;border-radius:50%;border:2px solid #ffd700;background:linear-gradient(45deg,#ff0055,#ffaa00);display:flex;align-items:center;justify-content:center;font-size:20px}
- .icons{display:flex;align-items:center;gap:14px}
- .bell{position:relative;font-size:24px;cursor:pointer}
- .bell-dot{position:absolute;top:-2px;right:-2px;width:10px;height:10px;background:#ff0055;border-radius:50%;border:2px solid #000}
- .bal-box{background:#111;border:1px solid #333;border-radius:20px;padding:6px 12px;display:flex;align-items:center;gap:6px}
- .bal-box b{color:#ffd700;font-size:16px}
- .bal-box button{background:#ffd700;color:#000;border:0;padding:3px 8px;border-radius:10px;font-weight:800;cursor:pointer}
- .logo{text-align:center;margin:14px 0 6px}
- .logo h1{font-size:42px} .logo h1 span{color:#ff0055} .logo h1 b{color:#ffd700}
- .logo p{font-size:12px;color:#00e5ff;letter-spacing:2px}
- .logo h2{font-size:26px;color:#00e5ff;border:2px solid #00e5ff;display:inline-block;padding:3px 18px;border-radius:12px;margin-top:8px;box-shadow:0 0 15px rgba(0,229,255,.4)}
- .tabs{display:flex;gap:8px;padding:14px 16px 6px;font-size:16px;font-weight:800;justify-content:center}
- .tabs span{cursor:pointer;padding:8px 14px;opacity:.6;background:#111;border-radius:20px;border:1px solid #333} .tabs span.active{opacity:1;color:#000;background:#ffd700;border-color:#ffd700}
- .search{margin:10px 16px;padding:12px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;width:calc(100% - 32px);outline:none}
- .section{padding:6px 16px 20px} .section h3{color:#ffd700;font-size:15px;margin:16px 0 10px}
- .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
- .card{background:linear-gradient(180deg,#1a1a1a,#0a0a0a);border:1px solid #333;border-radius:18px;padding:12px 6px 10px;text-align:center;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.8)}
- .card:active{transform:scale(.94)}
- .art{font-size:64px;line-height:1.2;filter:drop-shadow(0 8px 12px rgba(0,0,0,.6)) drop-shadow(0 0 15px rgba(255,215,0,.4))}
- .card h4{font-size:14px;font-weight:800;margin-top:6px} .card p{color:#ffd700;font-size:13px;font-weight:800;margin-top:2px}
- .send{margin-top:8px;background:linear-gradient(90deg,#ff0055,#ff5500);color:#fff;border:0;width:100%;padding:8px;border-radius:10px;font-weight:700;cursor:pointer}
- .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0 16px;font-size:11px;text-align:center;z-index:10}
- .bottom-nav div{cursor:pointer;opacity:.6} .bottom-nav div.active{opacity:1;color:#ffd700}
- .bottom-nav b{font-size:20px;display:block}
- #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:100;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
- #big{font-size:150px;filter:drop-shadow(0 0 30px rgba(255,215,0,.6));animation:pop .6s} @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
- @keyframes floatUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-420px);opacity:0}}
- .particle{position:absolute;font-size:28px;animation:floatUp 1.6s ease-out forwards}
- #notif{display:none;position:fixed;top:60px;right:16px;background:#111;border:1px solid #333;padding:12px 14px;border-radius:12px;z-index:99;width:260px;max-width:80vw}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0a0a0a;color:#fff;padding:15px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:10px}
+.balance{background:#1a1a1a;padding:8px 15px;border-radius:20px;border:1px solid gold;font-weight:bold}
+.tabs{display:flex;gap:10px;margin:15px 0}
+.tab{padding:8px 16px;background:#222;border-radius:20px;cursor:pointer}
+.tab.active{background:gold;color:#000;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#1a1a1a;border-radius:15px;padding:15px;text-align:center;border:2px solid #333}
+.card.lucky{border-color:#00ff88}
+.card.cp{border-color:#ff69b4}
+.card.bellking{border-color:#FFD700;box-shadow:0 0 25px #FFD700;background:linear-gradient(180deg,#1a1a1a,#000)}
+.icon{font-size:50px;margin-bottom:8px}
+.bellking .icon{animation:bellRing 1s infinite}
+@keyframes bellRing{0%,100%{transform:rotate(0)}25%{transform:rotate(15deg)}75%{transform:rotate(-15deg)}}
+.name{font-weight:bold;margin:5px 0}
+.price{color:gold;margin:5px 0}
+.send{width:100%;padding:10px;background:gold;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px}
+#popup,#luckyBoxPopup{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:99;text-align:center}
+#giftAnim,#boxIcon{font-size:100px}
+#popup h2{margin:15px 0 5px}
+#closeText,#boxText{color:#aaa;font-size:14px}
+#boxReward{color:gold;font-size:32px;margin-top:10px}
+#boxIcon{cursor:pointer}
 </style>
 </head>
 <body>
-<div class="phone">
- <div class="header">
-  <div class="toprow">
-   <div class="left"><div class="avatar">🎁</div><div><b style="font-size:14px">GifHub.com</b><br><span style="font-size:11px;color:#aaa">Welcome Back!</span></div></div>
-   <div class="icons">
-    <div class="bal-box">🪙 <b id="bal">15,000</b> <button onclick="recharge()">+</button></div>
-    <div class="bell" onclick="showNotif()">🔔<span class="bell-dot" id="bellDot"></span></div>
-   </div>
-  </div>
-  <div class="logo"><h1><span>GIF</span><b>HUB</b>.com</h1><p>SEND LOVE • SEND GIFTS</p><h2>100 GIFTS</h2></div>
- </div>
 
- <div id="notif"><b>🔔 Notifications</b><p style="font-size:13px;margin-top:8px">🎉 500 coins bonus added!</p><p style="font-size:13px;margin-top:6px">💎 Someone sent you Diamond!</p><button onclick="document.getElementById('notif').style.display='none'" style="margin-top:10px;background:#ff0055;color:#fff;border:0;padding:6px 12px;border-radius:8px;width:100%">Close</button></div>
-
- <div class="tabs">
-  <span class="active" onclick="showTab('gift',this)">🎁 Gift</span>
-  <span onclick="showTab('lucky',this)">🍀 Lucky Gift</span>
-  <span onclick="showTab('cp',this)">💑 CP Gift</span>
- </div>
- <input class="search" id="search" placeholder="🔍 Search on GifHub.com..." oninput="filter()">
-
- <!-- 1. GIFT -->
- <div class="section" id="sec-gift">
-  <h3>🎁 Gift - Hot Picks</h3><div class="grid" id="gHot"></div>
-  <h3>💎 Trending Now</h3><div class="grid" id="gHot2"></div>
-  <h3>✨ Exclusive - 50 Gifts</h3><div class="grid" id="gEx"></div>
-  <h3>👑 Ultra Premium</h3><div class="grid" id="gUltra"></div>
- </div>
-
- <!-- 2. LUCKY GIFT -->
- <div class="section" id="sec-lucky" style="display:none">
-  <h3>🍀 Lucky Gift (30)</h3><p style="color:#00e5ff;font-size:13px;margin-bottom:10px">Lucky-a feel panna gift anuppu!</p>
-  <div class="grid" id="gLucky"></div>
- </div>
-
- <!-- 3. CP GIFT -->
- <div class="section" id="sec-cp" style="display:none">
-  <h3>💑 CP Gift (20)</h3><p style="color:#ff55aa;font-size:13px;margin-bottom:10px">Couple-ku special gift!</p>
-  <div class="grid" id="gCP"></div>
- </div>
- <div style="height:70px"></div>
- <div class="bottom-nav"><div class="active"><b>🏠</b>Home</div><div><b>🎙️</b>Live</div><div><b>🎁</b>Gifts</div><div><b>💬</b>Chat</div><div><b>👤</b>Profile</div></div>
+<div class="header">
+  <h2>🎁 Gift Store</h2>
+  <div class="balance">🪙 <span id="bal">10,000,000</span></div>
 </div>
 
-<div id="overlay"><div id="big"></div><h2 id="oName"></h2><p id="oPrice" style="color:#ffd700;font-size:22px;font-weight:800"></p><p style="color:#00e5ff">Sent via GifHub.com 🎉</p><div id="parts"></div><p style="color:#aaa;margin-top:18px">Tap to close</p></div>
+<div class="tabs">
+  <div class="tab active" onclick="filter('all',this)">All</div>
+  <div class="tab" onclick="filter('gift',this)">Gift</div>
+  <div class="tab" onclick="filter('lucky',this)">Lucky</div>
+  <div class="tab" onclick="filter('cp',this)">CP</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- Normal / CP Popup -->
+<div id="popup" onclick="closePopup()">
+  <div id="giftAnim">🎁</div>
+  <h2 id="popupTitle">Gift Sent!</h2>
+  <p id="closeText">Auto closing...</p>
+</div>
+
+<!-- Lucky Box Popup -->
+<div id="luckyBoxPopup" onclick="openBox()">
+  <div id="boxIcon">📦</div>
+  <h2 id="boxText">Tap to Open Box!</h2>
+  <h1 id="boxReward"></h1>
+  <p style="color:#888;margin-top:10px">Lucky Gift = Box Open + Coin!</p>
+</div>
 
 <script>
-let balance=15000;
-let audioCtx;
-function playHDSound(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  let t = audioCtx.currentTime;
-  [880,1320,1760].forEach((freq,i)=>{
-    let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-    osc.type='sine'; osc.frequency.value=freq;
-    gain.gain.setValueAtTime(0,t+i*0.08); gain.gain.linearRampToValueAtTime(0.25,t+i*0.08+0.02); gain.gain.exponentialRampToValueAtTime(0.001,t+i*0.08+0.8);
-    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t+i*0.08); osc.stop(t+i*0.08+0.9);
+let balance = 10000000; // Test Coin 10M
+let audioCtx = null;
+let lastGift = null;
+let boxOpened = false;
+
+let gifts = [
+  {id:'bellking', name:'Lucky Bell King', icon:'🔔', price:10000, cat:'lucky'},
+  {id:'clover', name:'Lucky Clover', icon:'🍀', price:999, cat:'lucky'},
+  {id:'coinbox', name:'Lucky Coin Box', icon:'📦', price:1999, cat:'lucky'},
+  {id:'rose', name:'Rose', icon:'🌹', price:100, cat:'gift'},
+  {id:'teddy', name:'Teddy', icon:'🧸', price:500, cat:'gift'},
+  {id:'ring', name:'Diamond Ring', icon:'💍', price:5000, cat:'gift'},
+  {id:'cpheart', name:'CP Heart', icon:'💑', price:2000, cat:'cp'},
+  {id:'cplove', name:'CP Forever', icon:'💖', price:8888, cat:'cp'},
+];
+
+let currentCat = 'all';
+function render(){
+  let grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  gifts.filter(g=> currentCat==='all' || g.cat===currentCat).forEach(g=>{
+    let div = document.createElement('div');
+    div.className = 'card '+g.cat + (g.id==='bellking' ? ' bellking':'');
+    div.innerHTML = `<div class="icon">${g.icon}</div><div class="name">${g.name}</div><div class="price">🪙 ${g.price.toLocaleString()}</div><button class="send" onclick="sendGift('${g.id}')">Send</button>`;
+    grid.appendChild(div);
   });
-  if(navigator.vibrate) navigator.vibrate([60,30,60]);
 }
+function filter(cat, el){
+  currentCat = cat;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+// SOUND - Antha Gift-ku Antha Sound
+function playSound(cat){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    let o = audioCtx.createOscillator();
+    let g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    if(cat==='lucky'){
+      o.type='triangle';
+      o.frequency.setValueAtTime(1200, audioCtx.currentTime);
+      o.frequency.setValueAtTime(1800, audioCtx.currentTime+0.1);
+      o.frequency.setValueAtTime(2400, audioCtx.currentTime+0.2);
+    } else if(cat==='cp'){
+      o.type='sine';
+      o.frequency.setValueAtTime(520, audioCtx.currentTime);
+      o.frequency.setValueAtTime(780, audioCtx.currentTime+0.3);
+      o.frequency.setValueAtTime(1040, audioCtx.currentTime+0.6);
+    } else {
+      o.type='sine';
+      o.frequency.setValueAtTime(880, audioCtx.currentTime);
+      o.frequency.setValueAtTime(1320, audioCtx.currentTime+0.15);
+    }
+    g.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.6);
+    o.start(); o.stop(audioCtx.currentTime+0.7);
+  }catch(e){}
+}
+function playBellSound(){ playSound('lucky'); setTimeout(()=>playSound('lucky'),150); }
 function playCoinSound(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  let t = audioCtx.currentTime; let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain();
-  osc.type='triangle'; osc.frequency.setValueAtTime(1500,t); osc.frequency.exponentialRampToValueAtTime(2500,t+0.12);
-  gain.gain.setValueAtTime(0.3,t); gain.gain.exponentialRampToValueAtTime(0.001,t+0.3);
-  osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t); osc.stop(t+0.3);
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    let o = audioCtx.createOscillator(); let g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.type='square'; o.frequency.setValueAtTime(1500, audioCtx.currentTime);
+    o.frequency.setValueAtTime(2000, audioCtx.currentTime+0.1);
+    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.4);
+    o.start(); o.stop(audioCtx.currentTime+0.4);
+  }catch(e){}
 }
-const hot=[
- {n:"Crown",p:50000,i:"👑"},{n:"Diamond",p:10000,i:"💎"},{n:"Dragon",p:1000000,i:"🐉"},
- {n:"Yacht",p:100000,i:"🛥️"},{n:"Car",p:30000,i:"🚗"},{n:"Rocket",p:5000,i:"🚀"},
- {n:"Bouquet",p:5000,i:"💐"},{n:"Treasure",p:5000,i:"💰"},{n:"Guitar",p:20000,i:"🎸"}];
-const hot2=[
- {n:"Peacock",p:20000,i:"🦚"},{n:"Love Heart",p:10000,i:"❤️"},{n:"Golden Eagle",p:25000,i:"🦅"},
- {n:"Fireworks",p:40000,i:"🎆"},{n:"Jet",p:30000,i:"✈️"},{n:"SUV",p:30000,i:"🚙"},
- {n:"Palace",p:50000,i:"🏰"},{n:"Rose",p:5000,i:"🌹"},{n:"Coin",p:1000,i:"🪙"}];
-const exclusive=[
- {n:"Kiss",p:10,i:"💋"},{n:"Chocolate",p:50,i:"🍫"},{n:"Beer",p:99,i:"🍺"},{n:"Teddy",p:199,i:"🧸"},
- {n:"Red Rose",p:499,i:"🌹"},{n:"Lucky Star",p:999,i:"⭐"},{n:"Butterfly",p:2999,i:"🦋"},{n:"Bouquet",p:7999,i:"💐"},{n:"Diamond Ring",p:9999,i:"💍"},
- {n:"Golden Castle",p:19999,i:"🏰"},{n:"Prince Crown",p:29999,i:"👑"},{n:"Fire Phoenix",p:49999,i:"🔥"},{n:"Golden Dragon",p:69999,i:"🐉"},{n:"Diamond World",p:100000,i:"🌍"},
- {n:"Sports Car",p:10,i:"🏎️"},{n:"Panda Hug",p:50,i:"🐼"},{n:"Royal Crown",p:99,i:"👑"},{n:"Unicorn",p:299,i:"🦄"},
- {n:"DJ Beat",p:499,i:"🎧"},{n:"Lion King",p:699,i:"🦁"},{n:"Dragon Fire",p:999,i:"🐉"},{n:"Butterfly",p:1299,i:"🦋"},{n:"Diamond Heart",p:1999,i:"💎"},{n:"Rocket",p:2499,i:"🚀"},
- {n:"Birthday Cake",p:2999,i:"🎂"},{n:"Luxury Yacht",p:3999,i:"🛥️"},{n:"Dream Castle",p:4999,i:"🏰"},{n:"Big Gift",p:5999,i:"🎁"},{n:"Golden Mic",p:6999,i:"🎙️"},{n:"Angel Wings",p:7999,i:"👼"}];
-const ultra=[
- {n:"Sapphire Heart",p:9999,i:"💙"},{n:"Super Bike",p:12000,i:"🏍️"},{n:"Emerald Palace",p:15000,i:"💚"},
- {n:"Golden Throne",p:19999,i:"👑"},{n:"Phoenix King",p:49999,i:"🔥"},{n:"Cosmic Galaxy",p:99999,i:"🌌"}];
-const cp=[
- {n:"CP Heart Kiss",p:99,i:"💋"},{n:"CP Teddy Hug",p:199,i:"🧸"},{n:"CP Love Balloons",p:299,i:"🎈"},
- {n:"CP Rose Bouquet",p:499,i:"🌹"},{n:"CP Couple Hearts",p:699,i:"💞"},{n:"CP Date Night",p:999,i:"🌙"},
- {n:"CP Love Lock",p:1499,i:"🔒"},{n:"CP Diamond Duo",p:1999,i:"💎"},{n:"CP Bike Ride",p:2999,i:"🏍️"},
- {n:"CP Romantic Dinner",p:3999,i:"🍽️"},{n:"CP Couple Watch",p:4999,i:"⌚"},{n:"CP Love Castle",p:6999,i:"🏰"},
- {n:"CP Sapphire Pair",p:9999,i:"💙"},{n:"CP Golden Couple",p:12999,i:"💛"},{n:"CP Royal Wedding",p:19999,i:"💍"},
- {n:"CP Honeymoon Trip",p:29999,i:"✈️"},{n:"CP Couple Yacht",p:39999,i:"🛥️"},{n:"CP Phoenix Pair",p:49999,i:"🔥"},
- {n:"CP Diamond Palace",p:69999,i:"👑"},{n:"CP Eternal Galaxy",p:99999,i:"🌌"}];
-const lucky=[
- {n:"Lucky Clover",p:10,i:"🍀"},{n:"Lucky Red Packet",p:20,i:"🧧"},{n:"Lucky Candy",p:30,i:"🍬"},{n:"Lucky Coin",p:50,i:"🪙"},
- {n:"Lucky Star",p:100,i:"⭐"},{n:"Lucky Cat",p:200,i:"🐱"},{n:"Lucky Elephant",p:300,i:"🐘"},{n:"Lucky Dice",p:500,i:"🎲"},
- {n:"Lucky Magnet",p:699,i:"🧲"},{n:"Lucky Rainbow",p:999,i:"🌈"},{n:"Lucky Money Bag",p:1500,i:"💰"},{n:"Lucky Gold Bar",p:2000,i:"🪖"},
- {n:"Lucky Slot",p:3000,i:"🎰"},{n:"Lucky Horse",p:4000,i:"🐎"},{n:"Lucky Diamond",p:5000,i:"💎"},{n:"Lucky Unicorn",p:6000,i:"🦄"},
- {n:"Lucky Crown",p:7000,i:"👑"},{n:"Lucky Lion",p:8000,i:"🦁"},{n:"Lucky Sapphire King",p:9999,i:"💙"},{n:"Lucky Trophy",p:10000,i:"🏆"},
- {n:"Lucky Peacock",p:12000,i:"🦚"},{n:"Lucky Dragon",p:15000,i:"🐉"},{n:"Lucky Phoenix",p:18000,i:"🔥"},{n:"Lucky Yacht",p:20000,i:"🛥️"},
- {n:"Lucky Sports Car",p:25000,i:"🏎️"},{n:"Lucky Palace",p:30000,i:"🏰"},{n:"Lucky King Throne",p:35000,i:"👑"},{n:"Lucky Private Jet",p:40000,i:"✈️"},
- {n:"Lucky Royal Wedding",p:45000,i:"💍"},{n:"Lucky Galaxy King",p:50000,i:"🌌"}];
 
-function render(list,id){
- const grid=document.getElementById(id); if(!grid) return;
- list.forEach(g=>{
-  const d=document.createElement('div'); d.className='card'; d.dataset.name=g.n.toLowerCase();
-  d.innerHTML=`<div class="art">${g.i}</div><h4>${g.n}</h4><p>🪙 ${g.p.toLocaleString('en-IN')}</p><button class="send">Send 🎁</button>`;
-  d.onclick=()=>sendGift(g); grid.appendChild(d);
- });
-}
-render(hot,'gHot'); render(hot2,'gHot2'); render(exclusive,'gEx'); render(ultra,'gUltra'); render(cp,'gCP'); render(lucky,'gLucky');
+let popupTimer = null;
+function sendGift(id){
+  let gift = gifts.find(g=>g.id===id);
+  if(balance < gift.price){ alert('Coin Podhadhu!'); return; }
+  balance -= gift.price;
+  document.getElementById('bal').innerText = balance.toLocaleString();
+  lastGift = gift;
 
-function showTab(name,el){
- document.querySelectorAll('.tabs span').forEach(s=>s.classList.remove('active')); el.classList.add('active');
- ['gift','lucky','cp'].forEach(t=>document.getElementById('sec-'+t).style.display=t===name?'block':'none');
+  if(gift.id==='bellking') playBellSound();
+  else playSound(gift.cat);
+
+  if(gift.cat==='lucky'){
+    // LUCKY = Box Open!
+    openLuckyBox();
+  } else {
+    // GIFT / CP = Normal Popup
+    showNormalPopup(gift);
+  }
 }
-function showNotif(){const n=document.getElementById('notif'); n.style.display=n.style.display==='block'?'none':'block'; document.getElementById('bellDot').style.display='none';}
-function sendGift(g){
- playCoinSound();
- if(balance<g.p){alert('Balance low! Recharge pannu machi! Balance: '+balance.toLocaleString('en-IN'));return;}
- balance-=g.p; document.getElementById('bal').textContent=balance.toLocaleString('en-IN');
- playHDSound();
- const o=document.getElementById('overlay');
- document.getElementById('big').textContent=g.i;
- document.getElementById('oName').textContent=g.n+' Sent! 🎉';
- document.getElementById('oPrice').textContent='🪙 '+g.p.toLocaleString('en-IN');
- const box=document.getElementById('parts'); box.innerHTML='';
- for(let i=0;i<30;i++){const p=document.createElement('span'); p.className='particle'; p.textContent=['💖','✨','🌟','💎','🎉','🔥','💰','🍀','💑'][i%9]; p.style.left=(20+Math.random()*60)+'%'; p.style.top='70%'; box.appendChild(p);}
- o.style.display='flex';
- o.onclick=()=>o.style.display='none';
+
+function showNormalPopup(gift){
+  let popup = document.getElementById('popup');
+  let anim = document.getElementById('giftAnim');
+  document.getElementById('popupTitle').innerText = gift.name + ' Sent!';
+  anim.innerText = gift.icon;
+  popup.style.display = 'flex';
+  let closeTime = 5000; // Gift = 5 Sec
+  let animName = 'giftPop';
+  if(gift.cat==='cp'){ closeTime=10000; animName='cpHeart'; } // CP = 10 Sec
+  anim.style.animation = `${animName} 1s infinite`;
+  document.getElementById('closeText').innerText = `Auto closing in ${closeTime/1000} sec...`;
+  clearTimeout(popupTimer);
+  popupTimer = setTimeout(()=>{ closePopup(); }, closeTime);
 }
-function recharge(){balance+=10000; document.getElementById('bal').textContent=balance.toLocaleString('en-IN'); playCoinSound(); alert('10,000 coins added! 🎉');}
-function filter(){const q=document.getElementById('search').value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.name.includes(q)?'':'none';});}
+function closePopup(){
+  document.getElementById('popup').style.display='none';
+  document.getElementById('giftAnim').style.animation='none';
+  clearTimeout(popupTimer);
+}
+
+// LUCKY BOX LOGIC
+function openLuckyBox(){
+  boxOpened = false;
+  document.getElementById('boxIcon').innerText = '📦';
+  document.getElementById('boxIcon').style.animation = 'boxShake 0.5s infinite';
+  document.getElementById('boxText').innerText = 'Tap to Open Box!';
+  document.getElementById('boxReward').innerText = '';
+  document.getElementById('luckyBoxPopup').style.display = 'flex';
+}
+
+function openBox(){
+  if(boxOpened) return;
+  boxOpened = true;
+  let reward = 0;
+  if(lastGift && lastGift.id==='bellking'){
+    reward = Math.floor(Math.random()*20000)+10000; // Bell King: 10,000 - 30,000
+  } else {
+    reward = Math.floor(Math.random()*5000)+500; // Normal Lucky: 500 - 5500
+  }
+  document.getElementById('boxIcon').innerText = '🎉';
+  document.getElementById('boxIcon').style.animation = 'giftPop 0.5s';
+  document.getElementById('boxText').innerText = 'You Won!';
+  document.getElementById('boxReward').innerText = `🪙 +${reward.toLocaleString()} Coin!`;
+  playCoinSound();
+  balance += reward;
+  document.getElementById('bal').innerText = balance.toLocaleString();
+  // 2 Sec la auto close
+  setTimeout(()=>{
+    document.getElementById('luckyBoxPopup').style.display='none';
+  }, 2000);
+}
+
+let style = document.createElement('style');
+style.innerHTML = `
+@keyframes luckyBounce{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.4) rotate(15deg)}}
+@keyframes giftPop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes cpHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.3);filter:drop-shadow(0 0 20px pink)}}
+@keyframes boxShake{0%,100%{transform:rotate(0)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
+`;
+document.head.appendChild(style);
+render();
 </script>
 </body>
 </html>

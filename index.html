@@ -1,225 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucky Gift App - Final</title>
+<title>GifHub.com</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#0a0a0a;color:#fff;padding:15px}
-.header{display:flex;justify-content:space-between;align-items:center;padding:10px}
-.balance{background:#1a1a1a;padding:8px 15px;border-radius:20px;border:1px solid gold;font-weight:bold}
-.tabs{display:flex;gap:10px;margin:15px 0}
-.tab{padding:8px 16px;background:#222;border-radius:20px;cursor:pointer}
-.tab.active{background:gold;color:#000;font-weight:bold}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:#1a1a1a;border-radius:15px;padding:15px;text-align:center;border:2px solid #333}
-.card.lucky{border-color:#00ff88}
-.card.cp{border-color:#ff69b4}
-.card.bellking{border-color:#FFD700;box-shadow:0 0 25px #FFD700;background:linear-gradient(180deg,#1a1a1a,#000)}
-.icon{font-size:50px;margin-bottom:8px}
-.bellking .icon{animation:bellRing 1s infinite}
-@keyframes bellRing{0%,100%{transform:rotate(0)}25%{transform:rotate(15deg)}75%{transform:rotate(-15deg)}}
-.name{font-weight:bold;margin:5px 0}
-.price{color:gold;margin:5px 0}
-.send{width:100%;padding:10px;background:gold;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px}
-#popup,#luckyBoxPopup{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:99;text-align:center}
-#giftAnim,#boxIcon{font-size:100px}
-#popup h2{margin:15px 0 5px}
-#closeText,#boxText{color:#aaa;font-size:14px}
-#boxReward{color:gold;font-size:32px;margin-top:10px}
-#boxIcon{cursor:pointer}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#000;color:#fff;padding-bottom:80px}
+.header{background:linear-gradient(90deg,#ff0055,#ff6600);padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.header h1{font-size:22px}
+.coin-box{background:rgba(0,0,0,.4);padding:8px 15px;border-radius:20px;font-weight:bold}
+.test-row{display:flex;gap:10px;padding:10px}
+.test-btn{flex:1;padding:12px;background:gold;border:none;border-radius:12px;font-weight:bold;font-size:15px;cursor:pointer}
+.reset-btn{flex:1;padding:12px;background:#222;color:#fff;border:none;border-radius:12px;font-weight:bold;cursor:pointer}
+.tabs{display:flex;gap:8px;padding:0 10px;overflow-x:auto}
+.tab{padding:10px 18px;background:#222;border-radius:20px;white-space:nowrap;cursor:pointer;border:none;color:#fff}
+.tab.active{background:linear-gradient(90deg,#ff0055,#ff6600)}
+.gift-tab{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px}
+.hd-card{background:linear-gradient(180deg,#1a1a1a,#000);border-radius:20px;padding:15px;text-align:center;border:2px solid #333}
+.hd-card.bell{border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,.5)}
+.hd-card.lover{border-color:#FF1493;box-shadow:0 0 25px rgba(255,20,147,.5)}
+.hd-icon{width:90px;height:90px}
+.hd-name{font-weight:900;font-size:15px;margin:8px 0}
+.hd-price{color:gold;font-weight:bold;font-size:16px}
+.hd-send{width:100%;padding:11px;margin-top:10px;background:linear-gradient(90deg,#ff0055,#ff6600);border:none;border-radius:12px;color:#fff;font-weight:bold;font-size:15px;cursor:pointer}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999;text-align:center;padding:20px}
+@keyframes popAnim{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h2>🎁 Gift Store</h2>
-  <div class="balance">🪙 <span id="bal">10,000,000</span></div>
+<div class="header"><h1>🎁 GifHub.com</h1><div class="coin-box">🪙 <span id="bal">10,000,000</span></div></div>
+
+<div class="test-row">
+<button class="test-btn" onclick="addTestCoin()">🪙 +10M Test Coin</button>
+<button class="reset-btn" onclick="resetCoin()">Reset</button>
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="filter('all',this)">All</div>
-  <div class="tab" onclick="filter('gift',this)">Gift</div>
-  <div class="tab" onclick="filter('lucky',this)">Lucky</div>
-  <div class="tab" onclick="filter('cp',this)">CP</div>
+<button class="tab active" onclick="showTab('gift',this)">🎁 Gift</button>
+<button class="tab" onclick="showTab('lucky',this)">🍀 Lucky</button>
+<button class="tab" onclick="showTab('cp',this)">💖 CP</button>
+<button class="tab" onclick="showTab('lover',this)">💘 Lover</button>
 </div>
 
-<div class="grid" id="grid"></div>
-
-<!-- Normal / CP Popup -->
-<div id="popup" onclick="closePopup()">
-  <div id="giftAnim">🎁</div>
-  <h2 id="popupTitle">Gift Sent!</h2>
-  <p id="closeText">Auto closing...</p>
-</div>
-
-<!-- Lucky Box Popup -->
-<div id="luckyBoxPopup" onclick="openBox()">
-  <div id="boxIcon">📦</div>
-  <h2 id="boxText">Tap to Open Box!</h2>
-  <h1 id="boxReward"></h1>
-  <p style="color:#888;margin-top:10px">Lucky Gift = Box Open + Coin!</p>
-</div>
+<div class="gift-tab" id="giftTab"></div>
+<div id="giftPopup" class="popup"></div>
+<div id="luckyBoxPopup" class="popup"></div>
 
 <script>
-let balance = 10000000; // Test Coin 10M
-let audioCtx = null;
-let lastGift = null;
-let boxOpened = false;
+let balance = 10000000;
+function updateBalance(){ document.getElementById('bal').innerText = balance.toLocaleString(); }
+function addTestCoin(){ balance += 10000000; updateBalance(); alert('✅ +10M Added!\nBalance: '+balance.toLocaleString()); }
+function resetCoin(){ balance = 10000000; updateBalance(); alert('Reset to 10M!'); }
 
-let gifts = [
-  {id:'bellking', name:'Lucky Bell King', icon:'🔔', price:10000, cat:'lucky'},
-  {id:'clover', name:'Lucky Clover', icon:'🍀', price:999, cat:'lucky'},
-  {id:'coinbox', name:'Lucky Coin Box', icon:'📦', price:1999, cat:'lucky'},
-  {id:'rose', name:'Rose', icon:'🌹', price:100, cat:'gift'},
-  {id:'teddy', name:'Teddy', icon:'🧸', price:500, cat:'gift'},
-  {id:'ring', name:'Diamond Ring', icon:'💍', price:5000, cat:'gift'},
-  {id:'cpheart', name:'CP Heart', icon:'💑', price:2000, cat:'cp'},
-  {id:'cplove', name:'CP Forever', icon:'💖', price:8888, cat:'cp'},
+// HD ICONS - ALL SVG
+let HD_ICONS = {
+bell: `<svg class="hd-icon" viewBox="0 0 100 100"><defs><linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFF176"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient></defs><path d="M50 5 L60 15 L70 12 L68 25 Q75 35 75 55 Q75 70 68 78 L68 85 L32 85 L32 78 Q25 70 25 55 Q25 35 32 25 L30 12 L40 15 Z" fill="url(#gb)" stroke="#B8860B" stroke-width="2"/><circle cx="50" cy="88" r="7" fill="#FFD700"/><text x="50" y="28" font-size="15" text-anchor="middle">👑</text></svg>`,
+gift: `<svg class="hd-icon" viewBox="0 0 100 100"><rect x="10" y="45" width="80" height="45" rx="5" fill="#E91E63" stroke="#880E4F" stroke-width="2"/><rect x="43" y="45" width="14" height="45" fill="#FFD700"/><rect x="10" y="35" width="80" height="12" rx="4" fill="#FF4081"/><path d="M50 35 C35 10 15 15 25 28 C30 35 42 35 50 35 Z M50 35 C65 10 85 15 75 28 C70 35 58 35 50 35 Z" fill="#FFD700"/></svg>`,
+mic: `<svg class="hd-icon" viewBox="0 0 100 100"><rect x="35" y="10" width="30" height="50" rx="15" fill="#FFD700" stroke="#B8860B" stroke-width="2"/><path d="M20 45 Q20 75 50 75 Q80 75 80 45" fill="none" stroke="#FFD700" stroke-width="6"/><line x1="50" y1="75" x2="50" y2="90" stroke="#FFD700" stroke-width="6"/><line x1="35" y1="90" x2="65" y2="90" stroke="#FFD700" stroke-width="6"/></svg>`,
+wings: `<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 60 C30 40 10 45 5 25 C20 30 35 25 50 40 C65 25 80 30 95 25 C90 45 70 40 50 60 Z" fill="#FFF" stroke="#FFD700" stroke-width="2"/><path d="M50 60 C40 70 35 80 38 90 C45 85 55 85 62 90 C65 80 60 70 50 60 Z" fill="#FFD700"/></svg>`,
+bike: `<svg class="hd-icon" viewBox="0 0 100 100"><circle cx="25" cy="70" r="18" fill="none" stroke="#FF5722" stroke-width="5"/><circle cx="75" cy="70" r="18" fill="none" stroke="#FF5722" stroke-width="5"/><path d="M25 70 L45 35 L65 35 L75 70 M45 35 L40 55 L75 70 M40 55 L60 55" fill="none" stroke="#FF9800" stroke-width="5" stroke-linecap="round"/></svg>`,
+palace: `<svg class="hd-icon" viewBox="0 0 100 100"><rect x="20" y="50" width="60" height="40" fill="#00C853" stroke="#1B5E20" stroke-width="2"/><path d="M15 50 L50 20 L85 50 Z" fill="#00E676"/><rect x="42" y="65" width="16" height="25" fill="#FFD700"/><circle cx="50" cy="15" r="7" fill="#00E676" stroke="#1B5E20"/></svg>`,
+throne: `<svg class="hd-icon" viewBox="0 0 100 100"><path d="M15 90 L15 30 L30 45 L50 20 L70 45 L85 30 L85 90 Z" fill="#FFD700" stroke="#B8860B" stroke-width="2"/><rect x="20" y="55" width="60" height="10" fill="#FF8F00"/><rect x="30" y="65" width="40" height="25" fill="#FFD700"/><circle cx="50" cy="38" r="7" fill="#E91E63"/></svg>`,
+phoenix: `<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 10 C60 30 80 35 85 55 C80 75 65 90 50 90 C35 90 20 75 15 55 C20 35 40 30 50 10 Z" fill="#FF5722" stroke="#BF360C" stroke-width="2"/><path d="M50 25 C55 40 65 45 68 58 C60 70 40 70 32 58 C35 45 45 40 50 25 Z" fill="#FFEB3B"/></svg>`,
+clover: `<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 50 C35 35 20 40 25 55 C30 68 42 62 50 50 Z M50 50 C65 35 80 40 75 55 C70 68 58 62 50 50 Z M50 50 C35 65 40 80 55 75 C68 70 62 58 50 50 Z M50 50 C65 65 60 80 45 75 C32 70 38 58 50 50 Z" fill="#00C853" stroke="#1B5E20" stroke-width="2"/><path d="M50 50 Q52 70 45 88" fill="none" stroke="#1B5E20" stroke-width="4"/></svg>`,
+teddy: `<svg class="hd-icon" viewBox="0 0 100 100"><circle cx="28" cy="28" r="12" fill="#D2691E"/><circle cx="72" cy="28" r="12" fill="#D2691E"/><circle cx="50" cy="45" r="30" fill="#D2691E"/><ellipse cx="50" cy="52" rx="16" ry="12" fill="#FFE0B2"/><circle cx="42" cy="42" r="4" fill="#000"/><circle cx="58" cy="42" r="4" fill="#000"/><ellipse cx="50" cy="58" rx="5" ry="4" fill="#000"/><path d="M50 88 C35 75 25 65 30 55 C40 60 60 60 70 55 C75 65 65 75 50 88 Z" fill="#E91E63"/></svg>`,
+lover: `<svg class="hd-icon" viewBox="0 0 100 100"><defs><linearGradient id="lv" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF8A80"/><stop offset="50%" stop-color="#FF1493"/><stop offset="100%" stop-color="#FFD700"/></linearGradient></defs><path d="M50 85 C20 60 5 45 5 30 C5 15 18 8 28 12 C38 16 45 22 50 32 C55 22 62 16 72 12 C82 8 95 15 95 30 C95 45 80 60 50 85 Z" fill="url(#lv)" stroke="#C2185B" stroke-width="2"/><path d="M50 5 L58 14 L68 12 L64 22 Q70 30 70 45 Q70 55 65 60 L65 65 L35 65 L35 60 Q30 55 30 45 Q30 30 36 22 L32 12 L42 14 Z" fill="#FFD700" stroke="#B8860B" stroke-width="1.5"/><circle cx="50" cy="68" r="4" fill="#FFD700"/><text x="50" y="30" font-size="10" text-anchor="middle">💖</text></svg>`,
+loverHeart: `<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 88 C20 62 8 48 8 32 C8 16 20 8 32 12 C40 15 46 20 50 28 C54 20 60 15 68 12 C80 8 92 16 92 32 C92 48 80 62 50 88 Z" fill="#FF1493" stroke="#C2185B" stroke-width="2"/><circle cx="35" cy="30" r="6" fill="#FFF" opacity=".7"/></svg>`
+};
+
+let allGifts = [
+{name:'Lucky Bell King', key:'bell', price:10000, cat:'lucky'},
+{name:'Big Gift', key:'gift', price:5999, cat:'gift'},
+{name:'Golden Mic', key:'mic', price:6999, cat:'gift'},
+{name:'Angel Wings', key:'wings', price:7999, cat:'gift'},
+{name:'Super Bike', key:'bike', price:12000, cat:'gift'},
+{name:'Emerald Palace', key:'palace', price:15000, cat:'gift'},
+{name:'Golden Throne', key:'throne', price:20000, cat:'gift'},
+{name:'Phoenix King', key:'phoenix', price:25000, cat:'gift'},
+{name:'Lucky Clover', key:'clover', price:10, cat:'lucky'},
+{name:'CP Teddy Hug', key:'teddy', price:199, cat:'cp'},
+{name:'Lucky Lover Bell', key:'lover', price:9999, cat:'lover'},
+{name:'Lover Heart', key:'loverHeart', price:4999, cat:'lover'},
 ];
 
-let currentCat = 'all';
-function render(){
-  let grid = document.getElementById('grid');
-  grid.innerHTML = '';
-  gifts.filter(g=> currentCat==='all' || g.cat===currentCat).forEach(g=>{
-    let div = document.createElement('div');
-    div.className = 'card '+g.cat + (g.id==='bellking' ? ' bellking':'');
-    div.innerHTML = `<div class="icon">${g.icon}</div><div class="name">${g.name}</div><div class="price">🪙 ${g.price.toLocaleString()}</div><button class="send" onclick="sendGift('${g.id}')">Send</button>`;
-    grid.appendChild(div);
-  });
+let currentCat='gift';
+function renderGiftTab(){
+let list = allGifts.filter(g=> currentCat==='gift' ? (g.cat==='gift'||g.key==='bell') : g.cat===currentCat);
+document.getElementById('giftTab').innerHTML = list.map(g=>`
+<div class="hd-card ${g.key==='bell'?'bell':''} ${g.cat==='lover'?'lover':''}">
+${HD_ICONS[g.key]}
+<div class="hd-name">${g.name}</div>
+<div class="hd-price">🪙 ${g.price.toLocaleString()}</div>
+<button class="hd-send" onclick="sendGiftFromTab('${g.name}')">Send 🎁</button>
+</div>`).join('');
 }
-function filter(cat, el){
-  currentCat = cat;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  render();
-}
-
-// SOUND - Antha Gift-ku Antha Sound
-function playSound(cat){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    if(audioCtx.state==='suspended') audioCtx.resume();
-    let o = audioCtx.createOscillator();
-    let g = audioCtx.createGain();
-    o.connect(g); g.connect(audioCtx.destination);
-    if(cat==='lucky'){
-      o.type='triangle';
-      o.frequency.setValueAtTime(1200, audioCtx.currentTime);
-      o.frequency.setValueAtTime(1800, audioCtx.currentTime+0.1);
-      o.frequency.setValueAtTime(2400, audioCtx.currentTime+0.2);
-    } else if(cat==='cp'){
-      o.type='sine';
-      o.frequency.setValueAtTime(520, audioCtx.currentTime);
-      o.frequency.setValueAtTime(780, audioCtx.currentTime+0.3);
-      o.frequency.setValueAtTime(1040, audioCtx.currentTime+0.6);
-    } else {
-      o.type='sine';
-      o.frequency.setValueAtTime(880, audioCtx.currentTime);
-      o.frequency.setValueAtTime(1320, audioCtx.currentTime+0.15);
-    }
-    g.gain.setValueAtTime(0.35, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.6);
-    o.start(); o.stop(audioCtx.currentTime+0.7);
-  }catch(e){}
-}
-function playBellSound(){ playSound('lucky'); setTimeout(()=>playSound('lucky'),150); }
-function playCoinSound(){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    let o = audioCtx.createOscillator(); let g = audioCtx.createGain();
-    o.connect(g); g.connect(audioCtx.destination);
-    o.type='square'; o.frequency.setValueAtTime(1500, audioCtx.currentTime);
-    o.frequency.setValueAtTime(2000, audioCtx.currentTime+0.1);
-    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.4);
-    o.start(); o.stop(audioCtx.currentTime+0.4);
-  }catch(e){}
+function showTab(cat,el){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); currentCat=cat; renderGiftTab(); }
+function sendGiftFromTab(name){
+let g=allGifts.find(x=>x.name===name);
+if(balance<g.price){ alert('Coin illa! +10M Button adichiko!'); return; }
+balance-=g.price; updateBalance();
+if(g.cat==='lucky') playLuckySound();
+else if(g.cat==='lover') playLoverSound();
+else if(g.cat==='cp') playCPSound();
+else playGiftSound();
+showGiftSentPopup({name:g.name, iconKey:g.key, price:g.price, cat:g.cat});
 }
 
-let popupTimer = null;
-function sendGift(id){
-  let gift = gifts.find(g=>g.id===id);
-  if(balance < gift.price){ alert('Coin Podhadhu!'); return; }
-  balance -= gift.price;
-  document.getElementById('bal').innerText = balance.toLocaleString();
-  lastGift = gift;
+// HD SOUND
+let audioCtx=null;
+function tone(freq,start,dur,type='sine',vol=0.4){
+if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+if(audioCtx.state==='suspended') audioCtx.resume();
+let o=audioCtx.createOscillator(), g=audioCtx.createGain();
+o.type=type; o.frequency.value=freq;
+g.gain.setValueAtTime(0,audioCtx.currentTime+start);
+g.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+start+0.02);
+g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+start+dur);
+o.connect(g); g.connect(audioCtx.destination);
+o.start(audioCtx.currentTime+start); o.stop(audioCtx.currentTime+start+dur+0.1);
+}
+function playGiftSound(){ tone(880,0,0.5,'sine',0.5); tone(1760,0,0.3,'sine',0.2); tone(1100,0.12,0.5,'sine',0.5); tone(1320,0.24,0.7,'sine',0.5); }
+function playLuckySound(){ tone(1568,0,1.0,'sine',0.5); tone(2093,0,0.8,'sine',0.3); tone(1568,0.25,1.0,'sine',0.4); }
+function playCPSound(){ tone(523,0,1.0,'sine',0.4); tone(659,0.3,1.0,'sine',0.4); tone(784,0.6,1.2,'sine',0.4); tone(1046,0.9,1.5,'sine',0.4); }
+function playLoverSound(){ tone(1568,0,0.8,'sine',0.5); tone(2093,0,0.6,'sine',0.3); tone(523,0.2,1.0,'sine',0.4); tone(659,0.5,1.0,'sine',0.4); tone(784,0.8,1.2,'sine',0.4); tone(1046,1.1,1.5,'sine',0.4); }
 
-  if(gift.id==='bellking') playBellSound();
-  else playSound(gift.cat);
-
-  if(gift.cat==='lucky'){
-    // LUCKY = Box Open!
-    openLuckyBox();
-  } else {
-    // GIFT / CP = Normal Popup
-    showNormalPopup(gift);
-  }
+// POPUP - 5 SEC FOR ALL
+let popupTimer=null;
+function showGiftSentPopup(gift){
+let popup=document.getElementById('giftPopup');
+let bigIcon=HD_ICONS[gift.iconKey] ? HD_ICONS[gift.iconKey].replace('hd-icon','hd-icon" style="width:130px;height:130px;animation:popAnim .5s, floatAnim 1s infinite') : '🎁';
+let loverText = gift.cat==='lover' ? `<div style="color:#FF69B4;font-size:20px;margin-top:8px">💘 For My Lover 💘<br>Love You Forever ❤️</div>` : '';
+popup.innerHTML=`<div>${bigIcon}</div><h2 style="font-size:26px;margin-top:10px">${gift.name} Sent! 🎉</h2><div style="color:gold;font-size:24px;font-weight:bold">🪙 ${gift.price.toLocaleString()}</div>${loverText}<div style="color:#00d4ff;font-size:18px">Sent via GifHub.com 🎉</div><div id="autoCloseText" style="color:#ccc;margin-top:15px"></div>`;
+popup.style.display='flex';
+popup.onclick=()=>{ popup.style.display='none'; clearTimeout(popupTimer); };
+let closeTime=5000;
+let count=5;
+document.getElementById('autoCloseText').innerText=`Auto closing in 5 sec...`;
+let interval=setInterval(()=>{ count--; if(count>0) document.getElementById('autoCloseText').innerText=`Auto closing in ${count} sec...`; else clearInterval(interval); },1000);
+clearTimeout(popupTimer);
+popupTimer=setTimeout(()=>{ popup.style.display='none'; clearInterval(interval); if(gift.cat==='lucky'||gift.cat==='lover') openLuckyBox(gift); },closeTime);
 }
 
-function showNormalPopup(gift){
-  let popup = document.getElementById('popup');
-  let anim = document.getElementById('giftAnim');
-  document.getElementById('popupTitle').innerText = gift.name + ' Sent!';
-  anim.innerText = gift.icon;
-  popup.style.display = 'flex';
-  let closeTime = 5000; // Gift = 5 Sec
-  let animName = 'giftPop';
-  if(gift.cat==='cp'){ closeTime=10000; animName='cpHeart'; } // CP = 10 Sec
-  anim.style.animation = `${animName} 1s infinite`;
-  document.getElementById('closeText').innerText = `Auto closing in ${closeTime/1000} sec...`;
-  clearTimeout(popupTimer);
-  popupTimer = setTimeout(()=>{ closePopup(); }, closeTime);
+function openLuckyBox(gift){
+let reward = gift.name.includes('Bell') ? Math.floor(Math.random()*20000)+10000 : Math.floor(Math.random()*5000)+500;
+let box=document.getElementById('luckyBoxPopup');
+let opened=false;
+box.innerHTML=`<div style="font-size:100px">📦</div><h2>Tap to Open Box!</h2><p style="color:#aaa">${gift.cat==='lover'?'💘 Lover Lucky Box':'Lucky Gift Box'}</p>`;
+box.style.display='flex';
+box.onclick=()=>{
+if(opened) return; opened=true;
+box.innerHTML=`<div style="font-size:100px">🎉</div><h2>You Won!</h2><h1 style="color:gold">🪙 +${reward.toLocaleString()}</h1>${gift.cat==='lover'?'<div style="color:#FF69B4">💘 Lucky In Love! 💘</div>':''}`;
+balance+=reward; updateBalance(); playLuckySound();
+setTimeout(()=> box.style.display='none',2000);
+};
 }
-function closePopup(){
-  document.getElementById('popup').style.display='none';
-  document.getElementById('giftAnim').style.animation='none';
-  clearTimeout(popupTimer);
-}
-
-// LUCKY BOX LOGIC
-function openLuckyBox(){
-  boxOpened = false;
-  document.getElementById('boxIcon').innerText = '📦';
-  document.getElementById('boxIcon').style.animation = 'boxShake 0.5s infinite';
-  document.getElementById('boxText').innerText = 'Tap to Open Box!';
-  document.getElementById('boxReward').innerText = '';
-  document.getElementById('luckyBoxPopup').style.display = 'flex';
-}
-
-function openBox(){
-  if(boxOpened) return;
-  boxOpened = true;
-  let reward = 0;
-  if(lastGift && lastGift.id==='bellking'){
-    reward = Math.floor(Math.random()*20000)+10000; // Bell King: 10,000 - 30,000
-  } else {
-    reward = Math.floor(Math.random()*5000)+500; // Normal Lucky: 500 - 5500
-  }
-  document.getElementById('boxIcon').innerText = '🎉';
-  document.getElementById('boxIcon').style.animation = 'giftPop 0.5s';
-  document.getElementById('boxText').innerText = 'You Won!';
-  document.getElementById('boxReward').innerText = `🪙 +${reward.toLocaleString()} Coin!`;
-  playCoinSound();
-  balance += reward;
-  document.getElementById('bal').innerText = balance.toLocaleString();
-  // 2 Sec la auto close
-  setTimeout(()=>{
-    document.getElementById('luckyBoxPopup').style.display='none';
-  }, 2000);
-}
-
-let style = document.createElement('style');
-style.innerHTML = `
-@keyframes luckyBounce{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.4) rotate(15deg)}}
-@keyframes giftPop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
-@keyframes cpHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.3);filter:drop-shadow(0 0 20px pink)}}
-@keyframes boxShake{0%,100%{transform:rotate(0)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
-`;
-document.head.appendChild(style);
-render();
+renderGiftTab();
 </script>
 </body>
 </html>

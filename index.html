@@ -15,17 +15,18 @@ body{background:#000;color:#fff;padding-bottom:80px}
 .tabs{display:flex;gap:8px;padding:0 10px;overflow-x:auto}
 .tab{padding:10px 18px;background:#222;border-radius:20px;white-space:nowrap;cursor:pointer;border:none;color:#fff}
 .tab.active{background:linear-gradient(90deg,#ff0055,#ff6600)}
-.count{padding:0 12px;color:#aaa;font-size:13px;margin-bottom:5px}
+.count{padding:0 12px;color:#aaa;font-size:13px}
 .gift-tab{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px}
-.hd-card{background:linear-gradient(180deg,#1a1a1a,#000);border-radius:20px;padding:15px;text-align:center;border:2px solid #333}
-.hd-card.bell{border-color:#FFD700;box-shadow:0 0 25px rgba(255,215,0,.5)}
-.hd-icon{width:90px;height:90px}
+.hd-card{background:linear-gradient(180deg,#1a1a1a,#000);border-radius:20px;padding:15px;text-align:center;border:2px solid #333;overflow:hidden}
+.hd-card.lucky{border-color:#FFD700;box-shadow:0 0 20px rgba(255,215,0,.4)}
+.hd-card.cp{border-color:#FF1493;box-shadow:0 0 20px rgba(255,20,147,.4)}
+.hd-emoji{font-size:70px;line-height:1;display:block;filter:drop-shadow(0 0 15px rgba(255,215,0,.6));animation:floatAnim 2s infinite}
 .hd-name{font-weight:900;font-size:14px;margin:8px 0;min-height:36px}
 .hd-price{color:gold;font-weight:bold}
 .hd-send{width:100%;padding:11px;margin-top:10px;background:linear-gradient(90deg,#ff0055,#ff6600);border:none;border-radius:12px;color:#fff;font-weight:bold;cursor:pointer}
-.popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999;text-align:center;padding:20px}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999;text-align:center;padding:20px}
 @keyframes popAnim{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
-@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 </style>
 </head>
 <body>
@@ -43,82 +44,51 @@ body{background:#000;color:#fff;padding-bottom:80px}
 <script>
 let balance=10000000;
 function updateBalance(){document.getElementById('bal').innerText=balance.toLocaleString()}
-function addTestCoin(){balance+=10000000;updateBalance();alert('✅ +10M Added! Balance: '+balance.toLocaleString())}
+function addTestCoin(){balance+=10000000;updateBalance();alert('✅ +10M Added!')}
 function resetCoin(){balance=10000000;updateBalance();alert('Reset to 10M!')}
-
-let HD_ICONS={
-bell:`<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 5 L60 15 L70 12 L68 25 Q75 35 75 55 Q75 70 68 78 L68 85 L32 85 L32 78 Q25 70 25 55 Q25 35 32 25 L30 12 L40 15 Z" fill="#FFD700" stroke="#B8860B" stroke-width="2"/><circle cx="50" cy="88" r="7" fill="#FFD700"/><text x="50" y="28" font-size="15" text-anchor="middle">👑</text></svg>`,
-gift:`<svg class="hd-icon" viewBox="0 0 100 100"><rect x="10" y="45" width="80" height="45" rx="5" fill="#E91E63"/><rect x="43" y="45" width="14" height="45" fill="#FFD700"/><rect x="10" y="35" width="80" height="12" rx="4" fill="#FF4081"/></svg>`,
-mic:`<svg class="hd-icon" viewBox="0 0 100 100"><rect x="35" y="10" width="30" height="50" rx="15" fill="#FFD700"/><path d="M20 45 Q20 75 50 75 Q80 75 80 45" fill="none" stroke="#FFD700" stroke-width="6"/></svg>`,
-wings:`<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 60 C30 40 10 45 5 25 C20 30 35 25 50 40 C65 25 80 30 95 25 C90 45 70 40 50 60 Z" fill="#FFF" stroke="#FFD700" stroke-width="2"/></svg>`,
-bike:`<svg class="hd-icon" viewBox="0 0 100 100"><circle cx="25" cy="70" r="18" fill="none" stroke="#FF5722" stroke-width="5"/><circle cx="75" cy="70" r="18" fill="none" stroke="#FF5722" stroke-width="5"/><path d="M25 70 L45 35 L65 35 L75 70 M45 35 L40 55 L75 70" fill="none" stroke="#FF9800" stroke-width="5"/></svg>`,
-palace:`<svg class="hd-icon" viewBox="0 0 100 100"><rect x="20" y="50" width="60" height="40" fill="#00C853"/><path d="M15 50 L50 20 L85 50 Z" fill="#00E676"/><rect x="42" y="65" width="16" height="25" fill="#FFD700"/></svg>`,
-throne:`<svg class="hd-icon" viewBox="0 0 100 100"><path d="M15 90 L15 30 L30 45 L50 20 L70 45 L85 30 L85 90 Z" fill="#FFD700"/><rect x="20" y="55" width="60" height="10" fill="#FF8F00"/></svg>`,
-phoenix:`<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 10 C60 30 80 35 85 55 C80 75 65 90 50 90 C35 90 20 75 15 55 C20 35 40 30 50 10 Z" fill="#FF5722"/><path d="M50 25 C55 40 65 45 68 58 C60 70 40 70 32 58 C35 45 45 40 50 25 Z" fill="#FFEB3B"/></svg>`,
-clover:`<svg class="hd-icon" viewBox="0 0 100 100"><path d="M50 50 C35 35 20 40 25 55 C30 68 42 62 50 50 Z M50 50 C65 35 80 40 75 55 C70 68 58 62 50 50 Z M50 50 C35 65 40 80 55 75 C68 70 62 58 50 50 Z M50 50 C65 65 60 80 45 75 C32 70 38 58 50 50 Z" fill="#00C853"/></svg>`,
-teddy:`<svg class="hd-icon" viewBox="0 0 100 100"><circle cx="28" cy="28" r="12" fill="#D2691E"/><circle cx="72" cy="28" r="12" fill="#D2691E"/><circle cx="50" cy="45" r="30" fill="#D2691E"/><ellipse cx="50" cy="52" rx="16" ry="12" fill="#FFE0B2"/><circle cx="42" cy="42" r="4" fill="#000"/><circle cx="58" cy="42" r="4" fill="#000"/><path d="M50 88 C35 75 25 65 30 55 C40 60 60 60 70 55 C75 65 65 75 50 88 Z" fill="#E91E63"/></svg>`
-};
-
-// ===== OLD GIFT - 50 GIFT / 30 LUCKY / 20 CP =====
 let allGifts=[];
 
-// 🎁 GIFT 50 - Old Gift Names
-let giftBase=[
-['Big Gift','gift',5999],['Golden Mic','mic',6999],['Angel Wings','wings',7999],['Super Bike','bike',12000],['Emerald Palace','palace',15000],['Golden Throne','throne',20000],['Phoenix King','phoenix',25000],['Diamond Gift','gift',30000],['Royal Mic','mic',35000],['Crystal Wings','wings',40000]
+// ===== OLD GIFT 50 =====
+let oldGift=[
+['Big Gift','🎁',5999],['Golden Mic','🎤',6999],['Angel Wings','🪽',7999],['Super Bike','🏍️',12000],['Emerald Palace','🏰',15000],['Golden Throne','👑',20000],['Phoenix King','🔥',25000],['Diamond Gift','🎁',30000],['Royal Mic','🎤',35000],['Crystal Wings','🪽',40000]
 ];
-for(let i=0;i<50;i++){
-  let b=giftBase[i%giftBase.length];
-  let level=Math.floor(i/giftBase.length)+1;
-  let name = level===1 ? b[0] : b[0]+' Lv.'+level;
-  allGifts.push({name:name, key:b[1], price:b[2]+(level-1)*5000, cat:'gift'});
-}
+for(let i=0;i<50;i++){let b=oldGift[i%oldGift.length];let lv=Math.floor(i/oldGift.length)+1;let name=lv===1?b[0]:b[0]+' Lv.'+lv;allGifts.push({name:name,emoji:b[1],price:b[2]+(lv-1)*5000,cat:'gift'})}
 
-// 🍀 LUCKY 30
-let luckyBase=[
-['Lucky Bell King','bell',10000],['Lucky Clover','clover',10],['Lucky Bell Gold','bell',20000],['Lucky Bell Diamond','bell',50000],['Lucky Star','clover',100],['Lucky Crown','bell',30000]
+// ===== OLD LUCKY 30 =====
+let oldLucky=[
+['Lucky Bell King','🔔',10000],['Lucky Clover','🍀',10],['Lucky Bell Gold','🔔',20000],['Lucky Bell Diamond','🔔',50000],['Lucky Star','⭐',100],['Lucky Crown','👑',30000]
 ];
-for(let i=0;i<30;i++){
-  let b=luckyBase[i%luckyBase.length];
-  let level=Math.floor(i/luckyBase.length)+1;
-  let name = level===1 ? b[0] : b[0]+' Lv.'+level;
-  allGifts.push({name:name, key:b[1], price:b[2]+(level-1)*2000, cat:'lucky'});
-}
+for(let i=0;i<30;i++){let b=oldLucky[i%oldLucky.length];let lv=Math.floor(i/oldLucky.length)+1;let name=lv===1?b[0]:b[0]+' Lv.'+lv;allGifts.push({name:name,emoji:b[1],price:b[2]+(lv-1)*2000,cat:'lucky'})}
 
-// 💖 CP 20
-let cpBase=[
-['CP Teddy Hug','teddy',199],['CP Teddy Love','teddy',499],['CP Teddy Kiss','teddy',999],['CP Teddy Forever','teddy',1999]
+// ===== OLD CP 20 =====
+let oldCP=[
+['CP Teddy Hug','🧸',199],['CP Teddy Love','🧸',499],['CP Teddy Kiss','🧸',999],['CP Teddy Forever','🧸',1999]
 ];
-for(let i=0;i<20;i++){
-  let b=cpBase[i%cpBase.length];
-  let level=Math.floor(i/cpBase.length)+1;
-  let name = level===1 ? b[0] : b[0]+' Lv.'+level;
-  allGifts.push({name:name, key:b[1], price:b[2]+(level-1)*500, cat:'cp'});
-}
+for(let i=0;i<20;i++){let b=oldCP[i%oldCP.length];let lv=Math.floor(i/oldCP.length)+1;let name=lv===1?b[0]:b[0]+' Lv.'+lv;allGifts.push({name:name,emoji:b[1],price:b[2]+(lv-1)*500,cat:'cp'})}
 
 let currentCat='gift';
 function renderGiftTab(){
   let list=allGifts.filter(g=>g.cat===currentCat);
-  document.getElementById('countText').innerText = currentCat==='gift' ? '🎁 Showing 50 Gifts' : currentCat==='lucky' ? '🍀 Showing 30 Lucky Gifts' : '💖 Showing 20 CP Gifts';
-  document.getElementById('giftTab').innerHTML=list.map(g=>`<div class="hd-card ${g.key==='bell'?'bell':''}">${HD_ICONS[g.key]}<div class="hd-name">${g.name}</div><div class="hd-price">🪙 ${g.price.toLocaleString()}</div><button class="hd-send" onclick="sendGiftFromTab('${g.name}')">Send 🎁</button></div>`).join('');
+  document.getElementById('countText').innerText=currentCat==='gift'?'🎁 Old Gift - 50':currentCat==='lucky'?'🍀 Old Lucky - 30':'💖 Old CP - 20';
+  document.getElementById('giftTab').innerHTML=list.map(g=>`<div class="hd-card ${g.cat}"><span class="hd-emoji">${g.emoji}</span><div class="hd-name">${g.name}</div><div class="hd-price">🪙 ${g.price.toLocaleString()}</div><button class="hd-send" onclick="sendGiftFromTab('${g.name}')">Send 🎁</button></div>`).join('');
 }
 function showTab(cat,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentCat=cat;renderGiftTab()}
 function sendGiftFromTab(name){
   let g=allGifts.find(x=>x.name===name);
   if(balance<g.price){alert('Coin illa! +10M Button adichiko!');return}
   balance-=g.price;updateBalance();
-  if(g.cat==='lucky') playLuckySound(); else if(g.cat==='cp') playCPSound(); else playGiftSound();
-  showGiftSentPopup({name:g.name,iconKey:g.key,price:g.price,cat:g.cat});
+  if(g.cat==='lucky')playLuckySound();else if(g.cat==='cp')playCPSound();else playGiftSound();
+  showGiftSentPopup(g);
 }
 let audioCtx=null;
 function tone(f,s,d,t='sine',v=0.4){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+s);g.gain.linearRampToValueAtTime(v,audioCtx.currentTime+s+0.02);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+s+d);o.connect(g);g.connect(audioCtx.destination);o.start(audioCtx.currentTime+s);o.stop(audioCtx.currentTime+s+d+0.1)}
 function playGiftSound(){tone(880,0,0.5,'sine',0.5);tone(1760,0,0.3,'sine',0.2);tone(1100,0.12,0.5,'sine',0.5);tone(1320,0.24,0.7,'sine',0.5)}
-function playLuckySound(){tone(1568,0,1.0,'sine',0.5);tone(2093,0,0.8,'sine',0.3);tone(1568,0.25,1.0,'sine',0.4)}
-function playCPSound(){tone(523,0,1.0,'sine',0.4);tone(659,0.3,1.0,'sine',0.4);tone(784,0.6,1.2,'sine',0.4);tone(1046,0.9,1.5,'sine',0.4)}
+function playLuckySound(){tone(1568,0,1,'sine',0.5);tone(2093,0,0.8,'sine',0.3);tone(1568,0.25,1,'sine',0.4)}
+function playCPSound(){tone(523,0,1,'sine',0.4);tone(659,0.3,1,'sine',0.4);tone(784,0.6,1.2,'sine',0.4);tone(1046,0.9,1.5,'sine',0.4)}
 let popupTimer=null;
 function showGiftSentPopup(gift){
   let p=document.getElementById('giftPopup');
-  let big=HD_ICONS[gift.iconKey].replace('hd-icon','hd-icon" style="width:130px;height:130px;animation:popAnim .5s, floatAnim 1s infinite');
-  p.innerHTML=`<div>${big}</div><h2 style="font-size:26px;margin-top:10px">${gift.name} Sent! 🎉</h2><div style="color:gold;font-size:24px;font-weight:bold">🪙 ${gift.price.toLocaleString()}</div><div style="color:#00d4ff">Sent via GifHub.com 🎉</div><div id="autoCloseText" style="color:#ccc;margin-top:15px"></div>`;
+  p.innerHTML=`<div style="font-size:120px;animation:popAnim .5s, floatAnim 1s infinite">${gift.emoji}</div><h2 style="font-size:26px;margin-top:10px">${gift.name} Sent! 🎉</h2><div style="color:gold;font-size:24px;font-weight:bold">🪙 ${gift.price.toLocaleString()}</div><div style="color:#00d4ff">Sent via GifHub.com 🎉</div><div id="autoCloseText" style="color:#ccc;margin-top:15px"></div>`;
   p.style.display='flex';p.onclick=()=>{p.style.display='none';clearTimeout(popupTimer)};
   let count=5;document.getElementById('autoCloseText').innerText=`Auto closing in 5 sec...`;
   let iv=setInterval(()=>{count--;if(count>0)document.getElementById('autoCloseText').innerText=`Auto closing in ${count} sec...`;else clearInterval(iv)},1000);
